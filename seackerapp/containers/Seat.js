@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image} from 'react-native'
 
-const LandingPage = (props) => {
+const Seat = (props) => {
     const [one, setone] = useState(false)
     const [meeting, setmeeting] = useState(false)
     const [auditorium, setauditorium] = useState(false)
@@ -77,4 +77,4 @@ const LandingPage = (props) => {
     )
 }
 
-export default LandingPage
+export default Seat

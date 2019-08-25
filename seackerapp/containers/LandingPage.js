@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image} from 'react-native'
+import {connect} from 'react-redux'
+
 
 const LandingPage = (props) => {
     const [one, setone] = useState(false)
@@ -77,4 +79,16 @@ const LandingPage = (props) => {
     )
 }
 
-export default LandingPage
+// export default LandingPage
+
+const mapState = (state) => {
+    return {
+        ...state
+    }
+}
+
+const mapDispatch = {
+    
+}
+
+export default connect()(LandingPage)

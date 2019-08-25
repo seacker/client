@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image} from 'react-native'
 import {connect} from 'react-redux'
+import {changeSection} from '../store/action'
+
 
 
 const LandingPage = (props) => {
@@ -26,20 +28,24 @@ const LandingPage = (props) => {
         if(value === 'One'){
             console.log('masuk di one seat')
             setone(true)
+            props.changeSection(value)
+            props.navigation.navigate('Seat', {type: value})
         }else if(value === 'Meeting'){
             console.log('masuk di meeting')
             setmeeting(true)
+            props.changeSection(value)
         }else if(value === 'Auditorium'){
             console.log('masuk di auditorium')
             setauditorium(true)
+            props.changeSection(value)
         }
     }
     return (
-        // <ImageBackground source={{uri: 'https://www.telemessage.com/wp-content/uploads/2017/01/collaboration-tools.png' }} style={{width: '100%', height: '100%'}}>
-        <View style={{backgroundColor: 'black'}}>
+        <ImageBackground source={require('../assets/Seacker.png')} style={{width: '100%', height: '100%'}}>
+        <View style={{}}>
             <SafeAreaView>
                 <View style={{ justifyContent: 'center', height: '100%', alignItems: 'center'}}>
-                    <View style={{ height: 250, backgroundColor: 'black', opacity: 0.65, borderRadius: 10}}>
+                    <View style={{ height: 250, opacity: 0.65, borderRadius: 10}}>
                         <Text style={{ color: 'white'}}> disini nanti list book seacker ...</Text>
                             {
                                 one ? <Text style={{ color: 'white'}}> lagi open one seat</Text> : <Text style={{ color: 'white'}}>Nothing to open</Text>
@@ -66,7 +72,7 @@ const LandingPage = (props) => {
                                             style = {{ width: 100, height: 100}}
                                             source={{uri: item.url}}
                                         />
-                                        <Text style={{ color: 'black'}}> {item.name} </Text>
+                                        <Text style={{ color: 'white'}}> {item.name} </Text>
                                     </View>
                                 </TouchableOpacity>
                             )}
@@ -75,7 +81,7 @@ const LandingPage = (props) => {
                 </View>
             </SafeAreaView>
         </View>
-        // </ImageBackground>
+        </ImageBackground>
     )
 }
 
@@ -88,7 +94,7 @@ const mapState = (state) => {
 }
 
 const mapDispatch = {
-    
+    changeSection
 }
 
-export default connect()(LandingPage)
+export default connect(mapState, mapDispatch)(LandingPage)

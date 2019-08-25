@@ -44,9 +44,9 @@ const OneSeat = (props) => {
                             <TouchableOpacity>
                                 <View style={{ margin: 3}}>
                                     <Image
-                                        style={{ width: 25, height: 25, shadowColor: 'pink', shadowRadius: 10, shadowOpacity: 1.5}}
-                                        // source={require('../assets/icon.png')}
-                                        source={{ uri: 'https://making-the-web.com/sites/default/files/clipart/147743/car-seat-clipart-147743-5874166.png'}}
+                                        style={{ width: 25, height: 25}}
+                                        source={require('../assets/seat.png')}
+                                        // source={{ uri: 'https://making-the-web.com/sites/default/files/clipart/147743/car-seat-clipart-147743-5874166.png'}}
                                     />
                                 </View>
                             </TouchableOpacity>

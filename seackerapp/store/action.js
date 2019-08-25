@@ -1,7 +1,9 @@
 export function fetchSeat(value){
-    return {
-        type: 'FETCH',
-        state: value
+    if(value == 'one'){
+        return {
+            type: 'FETCH',
+            state: value
+        }
     }
 }
 export function changeSection(value){
@@ -10,7 +12,7 @@ export function changeSection(value){
         state: value
     }
 }
-export function choSeat(value){
+export function choosenSeat(value){
     return {
         type: 'BOOKSEAT',
         state: value

@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image} from 'react-native'
+import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image, Modal} from 'react-native'
 import {connect} from 'react-redux'
 import {changeSection} from '../store/action'
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 
 
@@ -34,33 +35,46 @@ const LandingPage = (props) => {
             console.log('masuk di meeting')
             setmeeting(true)
             props.changeSection(value)
+            props.navigation.navigate('Seat', {type: value})
         }else if(value === 'Auditorium'){
             console.log('masuk di auditorium')
             setauditorium(true)
             props.changeSection(value)
+            props.navigation.navigate('Seat', {type: value})
         }
     }
+    // change image, showing or not
+    const [change, setchange] = useState(false)
+    const changeModal = (value) => {
+        console.log('masuk changeModal ', value)
+        setchange(value)
+    }
+    const images = [{
+        name: 'All',
+        props: {
+            source: require('../assets/landingPage.png')
+        }
+    }]
     return (
         <ImageBackground source={require('../assets/Seacker.png')} style={{width: '100%', height: '100%'}}>
-        <View style={{}}>
+        <View style={{ margin: 30}}>
             <SafeAreaView>
                 <View style={{ justifyContent: 'center', height: '100%', alignItems: 'center'}}>
-                    <View style={{ height: 250, opacity: 0.65, borderRadius: 10}}>
-                        <Text style={{ color: 'white'}}> disini nanti list book seacker ...</Text>
-                            {
-                                one ? <Text style={{ color: 'white'}}> lagi open one seat</Text> : <Text style={{ color: 'white'}}>Nothing to open</Text>
-                            }
-                            {
-                                meeting ? <Text style={{ color: 'white'}}> lagi open meeting room</Text> : <Text style={{ color: 'white'}}>Nothing to open</Text>
-
-                            }
-                            {
-                                auditorium ? <Text style={{ color: 'white'}}> lagi open auditorium</Text> : <Text style={{ color: 'white'}}>Nothing to open</Text>
-
-                            }
-                        
-                    </View>
                     <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                        <View>
+                            <Button onPress={() => { changeModal(true)}} title='Display Floor'></Button>
+                            {
+                                change ? (
+                                    <Modal visible={true} transparent={true}>
+                                        <Text>{images.name}</Text>
+                                        <ImageViewer imageUrls={images}/>
+                                        <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
+                                    </Modal>
+                                ) : (
+                                    <Text></Text>
+                                )
+                            }
+                        </View>
                         <FlatList
                             data={btns}
                             numColumns={3}

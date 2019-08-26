@@ -33,7 +33,6 @@ const Seat = (props) => {
         }
     }, [one, meeting, auditorium])
 
-
     return (
         <ImageBackground source={require('../assets/Seacker-2.png')} style={{width: '100%', height: '100%'}}>
             <View style={{ margin: 25}}>
@@ -43,7 +42,7 @@ const Seat = (props) => {
                         one && (
                             <View>
                                 <View>
-                                    <OneSeat/>
+                                    <OneSeat navigation={props.navigation}/>
                                 </View>
                             </View>
                         )

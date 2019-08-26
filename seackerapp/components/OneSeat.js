@@ -48,7 +48,6 @@ const OneSeat = (props) => {
     const choosenSeatUs = (value) => {
         setbok(value)
         console.log('choosen seat by user: ', value)
-
     }
     const formulaSeatB = {
         blockName: '1',
@@ -159,6 +158,15 @@ const OneSeat = (props) => {
             url: 'https://www.pwc.com/ca/en/consulting/women-in-work-2018/p494583-services-consulting-womeninwork2018-main-whatpayattention-illustration.png'
         }
     ]
+
+    //with coordinate
+    const changePage = (value) => {
+        console.log('ini .... : ', props.navigation)
+        // dont forget sending the user
+        props.navigation.navigate(value)
+        // props.navigation.navigate('Seat')
+    }
+
     return (
         <View>
             <Button onPress={() => { changeModal(true)}} title='Display Seat'></Button>
@@ -192,6 +200,7 @@ const OneSeat = (props) => {
                             </TouchableOpacity>
                         )}
                     />
+                    <Button onPress={() => { changePage('Coordinate')}} title='coordinate'></Button>
                 </View>
             </View>
             <View>

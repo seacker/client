@@ -3,6 +3,7 @@ import { createStackNavigator, createAppContainer} from 'react-navigation'
 
 import LandingPage from '../containers/LandingPage'
 import Seat from '../containers/Seat'
+import Coordinate from '../components/CoordinatePick'
 
 const StackNavigator = createStackNavigator({
     LandingPage: {
@@ -20,6 +21,9 @@ const StackNavigator = createStackNavigator({
         //         color: '#f03f39'
         //     },
         // })
+    },
+    Coordinate: {
+        screen: Coordinate
     }
 }, {
     initialRouteName: 'LandingPage'

@@ -58,22 +58,22 @@ const Seat = (props) => {
     return (
         <ImageBackground source={require('../assets/Seacker-2.png')} style={{width: '100%', height: '100%'}}>
             <View style={{ margin: 25}}>
-                <Text style={{ color: 'white'}}> Ini untuk Seat </Text>
+                {/* <Text style={{ color: 'white'}}> Ini untuk Seat </Text> */}
                 <SafeAreaView>
                     <View>
                         <View>
-                            <Text style={{ color: 'white'}}>{props.Seat10}</Text>
-                            <Text style={{ color: 'white'}}>{props.formulaSeatB}</Text>
+                            {/* <Text style={{ color: 'white'}}>{props.Seat10}</Text>
+                            <Text style={{ color: 'white'}}>{props.formulaSeatB}</Text> */}
                         </View>
                         <View>
                             <OneSeat/>
                         </View>
                     </View>
                     <View>
-                        <Text style={{ color: 'white'}}>Meeting Room</Text>
+                        {/* <Text style={{ color: 'white'}}>Meeting Room</Text> */}
                     </View>
                     <View>
-                        <Text style={{ color: 'white'}}>Auditorium</Text>
+                        {/* <Text style={{ color: 'white'}}>Auditorium</Text> */}
                     </View>
                 </SafeAreaView>
             </View>

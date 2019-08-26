@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStackNavigator, createAppContainer, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation'
+import { createStackNavigator, createAppContainer} from 'react-navigation'
 
 import LandingPage from '../containers/LandingPage'
 import Seat from '../containers/Seat'
@@ -10,16 +10,16 @@ const StackNavigator = createStackNavigator({
     },
     Seat: {
         screen: Seat,
-        navigationOption: () => ({
-            title: 'Choose Your 😇',
-            headerStyle: {
-                height: 23,
-                backgrounColor: '#2c3c50',
-            },
-            headerTitleStyle: {
-                color: '#f03f39'
-            },
-        })
+        // navigationOption: () => ({
+        //     title: 'Choose Your 😇',
+        //     headerStyle: {
+        //         height: 23,
+        //         backgrounColor: '#2c3c50',
+        //     },
+        //     headerTitleStyle: {
+        //         color: '#f03f39'
+        //     },
+        // })
     }
 }, {
     initialRouteName: 'LandingPage'

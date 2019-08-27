@@ -7,60 +7,261 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const CoordinatePick = (props) => {
     return (
         <ImageBackground source={require('../assets/seats.png')} style={{width: '100%', height: '100%'}}>
-            <View>
-                {/* <Text style={{ color: 'white', top: 110, left: 268}}> A </Text> */}
-                {/* 1 */}
-                <Image 
-                    style = {{ width: 40, height: 40, top: 97, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                {/* 2 */}
-                <Image 
-                    style = {{ width: 40, height: 40, top: 110, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 132, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 146, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 167, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 230, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 243, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 265, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 280, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
-                <Image 
-                    style = {{ width: 40, height: 40, top: 301, left: 260}}
-                    source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
-                >
-                </Image>
+            <View style={{flex : 1, flexDirection: 'row', justifyContent : 'flex-start' , top : 70}}>
+                <View style={{flex : 1, left : 120}}>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    {/* 2 */}
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : 11}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 11}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -16}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -16}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -45}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -45}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -75}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -75}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                </View>
+                <View style={{flex : 1, left : 30}}>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    {/* 2 */}
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : 11}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -16}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -45}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -75}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 40}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                </View>
+            </View>
+            <View style={{flex : 1, flexDirection: 'row', top : 70}}>
+                <View style={{flex : 1, left : 120}}>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -80}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -80}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    {/* 2 */}
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -110}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -110}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -140}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -140}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -170}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -170}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'white', width: 30, height: 30, top : -200}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -200}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                    </View>
+                </View>
+                <View style={{flex : 1, left : 30}}>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -80}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -50}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    {/* 2 */}
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -110}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -50}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -140}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -50}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -170}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : -50}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                    <View style={{flex : 1, flexDirection : 'row'}}>
+                        <Image 
+                            style = {{backgroundColor: 'green', width: 30, height: 30, top : -200}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image>
+                        {/* <Image 
+                            style = {{backgroundColor: 'pink', width: 30, height: 30, top : 10}}
+                            source={{ uri: 'http://pluspng.com/img-png/red-cross-png-red-cross-png-file-2000.png'}}
+                        >
+                        </Image> */}
+                    </View>
+                </View>
             </View>
         </ImageBackground>
     )

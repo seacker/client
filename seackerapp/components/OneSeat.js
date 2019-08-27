@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {View, Text, Image, TouchableOpacity, FlatList, Modal, Button, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import {fetchSeat} from '../store/action'
-import ImageViewer from 'react-native-image-zoom-viewer';
+// import ImageViewer from 'react-native-image-zoom-viewer';
 
 const OneSeat = (props) => {
     const [blockB, setblockB] = useState(false) //1
@@ -174,7 +174,7 @@ const OneSeat = (props) => {
                 change ? (
                     <Modal visible={true} transparent={true}>
                         <Text>{images.name}</Text>
-                        <ImageViewer imageUrls={images}/>
+                        {/* <ImageViewer imageUrls={images}/> */}
                         <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
                     </Modal>
                 ) : (

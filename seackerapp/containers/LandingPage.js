@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image, Modal} from 'react-native'
 import {connect} from 'react-redux'
 import {changeSection} from '../store/action'
-import ImageViewer from 'react-native-image-zoom-viewer';
+// import ImageViewer from 'react-native-image-zoom-viewer';
 
 
 
@@ -67,7 +67,7 @@ const LandingPage = (props) => {
                                 change ? (
                                     <Modal visible={true} transparent={true}>
                                         <Text>{images.name}</Text>
-                                        <ImageViewer imageUrls={images}/>
+                                        {/* <ImageViewer imageUrls={images}/> */}
                                         <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
                                     </Modal>
                                 ) : (

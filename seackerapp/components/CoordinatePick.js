@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {View, Text, Image, TouchableOpacity, FlatList, Modal, Button, ScrollView, ImageBackground} from 'react-native'
 import {connect} from 'react-redux'
 import {fetchSeat} from '../store/action'
-import ImageViewer from 'react-native-image-zoom-viewer';
+// import ImageViewer from 'react-native-image-zoom-viewer';
 
 const CoordinatePick = (props) => {
     return (

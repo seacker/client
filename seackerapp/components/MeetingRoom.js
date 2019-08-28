@@ -8,26 +8,28 @@ const MeetingRoom = (props) => {
 
     checkTime = (time) => {
         let temp = time.split(':')
-        let hours = Number(temp[0])
-        let minutes = Number(temp[1])
         let roundingMinutes
         let roundingHours
 
-        if ( minutes>0 && minutes<30) {
-            roundingMinutes = 30
-            roundingHours = hours
-        } else if (minutes>30 && minutes<=60) {
-            roundingMinutes = 0
-            roundingHours = hours+1
+        if ( Number(temp[1])>0 && Number(temp[1])<30) {
+            roundingMinutes = '30'
+            roundingHours = temp[0]
+        } else if (Number(temp[1])>30 && Number(temp[1])<=60) {
+            roundingMinutes = '00'
+            if (String(temp[0]).length === 1) {
+                roundingHours = `0${temp[0]}`
+            } else {
+                roundingHours = temp[0]
+            }
         } else {
-            roundingMinutes = minutes
-            roundingHours = hours
+            roundingMinutes = temp[1]
+            roundingHours = temp[0]
         }
         return `${roundingHours}:${roundingMinutes}`
     }
 
-    const [startTime, setStart] = useState(checkTime(`${new Date().getHours()}:${new Date().getMinutes()}`))
-    const [endTime, setEnd] = useState(``)
+    const [startTime, setStart] = useState('')
+    const [endTime, setEnd] = useState('')
     const [date, setDate] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
     const [schedules, setSchedules] = useState([])
     const [book, setBook] = useState([])
@@ -57,7 +59,6 @@ const MeetingRoom = (props) => {
     })
 
     const changeModal = (value) => {
-        console.log('masuk changeModal ', value)
         setchange(value)
     }
 
@@ -69,16 +70,47 @@ const MeetingRoom = (props) => {
     }]
 
     function filteredData(selectedDate) {
+        console.log(schedule.date, selectedDate, '<======== cek similarity')
         let filtered = schedules.filter( (schedule) => {
             if (schedule.date === selectedDate) {
                 return schedule
             }
         })
-
         setFiltered(filtered)
-
     }
 
+    function retrieveSchedules() {
+        axios({
+            method: 'get',
+            url: 'http://13.251.59.155/booking',
+            headers: {
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
+            }
+        })
+        .then( ({data}) => {
+            console.log('masuk then get schedules', data)
+            setSchedules(data)
+        })
+        .catch( (err) => {
+            console.log(err)
+            Alert.alert(
+                'Error fetch data from server',
+                `Detail: ${err.message}`,
+                [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'OK', 
+                      onPress: () => console.log('OK Pressed')
+                    },
+                ],
+                {cancelable: false},
+            )
+        })
+    }
     // retrieveData = async () => {
     //     try {
     //       const token = await AsyncStorage.getItem('token');
@@ -107,36 +139,12 @@ const MeetingRoom = (props) => {
     //   };
 
     useEffect( () => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:3001/booking',
-            headers: {
-                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
-            }
-        })
-        .then( ({data}) => {
-            setSchedules(data)
-        })
-        .catch( (err) => {
-            console.log(err)
-            Alert.alert(
-                'Error fetch data from server',
-                `Detail: ${err.message}`,
-                [
-                    {
-                      text: 'Cancel',
-                      onPress: () => console.log('Cancel Pressed'),
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'OK', 
-                      onPress: () => console.log('OK Pressed')
-                    },
-                ],
-                {cancelable: false},
-            )
-        })
+        retrieveSchedules()
     }, [])
+
+    useEffect( () => {
+        setFiltered(schedules)
+    }, [schedules])
 
     useEffect( () => {
         console.log(book, 'dari use effect')
@@ -155,6 +163,22 @@ const MeetingRoom = (props) => {
             }
         })
     }, [book])
+
+    function checkStartTime(start) {
+        if (date === `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`) {
+            let temp = start.split(':')
+            if (Number(temp[0])<=new Date().getHours()) {
+                Alert.alert(
+                    'Are you time traveler?',
+                    `It's already ${(new Date().getHours() < 12) ? (`${new Date().getHours()} AM`) : (`${new Date().getHours()-12} PM`)}`
+                )
+            } else {
+                setStart(checkTime(start))
+            }
+        } else {
+            setStart(checkTime(start))
+        }
+    }
     
     function bookRoom(oneRoom) {
         if (book.length == 0) {
@@ -188,26 +212,12 @@ const MeetingRoom = (props) => {
         }
     }
     
-    bookingFunction = (start, end, date, bookRooms) => {
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:19000/booking',
-            headers: {
-                'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
-            },
-            data: {
-                date: date,
-                startBook: start,
-                endBook: end,
-                arrRooms: bookRooms
-            }
-        })
-        .then( (result) => {
-            console.log('masuk then')
-            retrieveToken()
+    function bookingFunction(start, end, date, bookRooms) {
+        console.log('masuk booking function')
+        if (endTime === '' || book.length === 0 || startTime === '') {
             Alert.alert(
-                'Success!',
-                `Your book is logged now in server, don't forget to mark this on your calendar. Date: ${result.date}, Time: ${startBook}, Room: ${JSON.stringify(result.arrRooms)}`,
+                'Bad request',
+                'All data must be filled properly',
                 [
                     {
                         text: 'Cancel',
@@ -221,26 +231,64 @@ const MeetingRoom = (props) => {
                 ],
                 {cancelable: false},
             )
-        })
-        .catch( (err) => {
-            console.log(err)
-            Alert.alert(
-                'Failed!',
-                'Internal server error',
-                [
-                    {
-                        text: 'Cancel',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'OK', 
-                        onPress: () => console.log('OK Pressed')
-                    },
-                ],
-                {cancelable: false},
-            )
-        })
+        } else {
+            axios({
+                method: 'post',
+                url: 'http://13.251.59.155/booking',
+                headers: {
+                    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
+                },
+                data: {
+                    date: date,
+                    startBook: start,
+                    endBook: end,
+                    arrRooms: bookRooms
+                }
+            })
+            .then( ({data}) => {
+                console.log('masuk then')
+                retrieveSchedules()
+                Alert.alert(
+                    'Success!',
+                    `
+    Your book is logged now on server
+    Mark this on your calendar 
+    Date: ${data.date}
+    Time: ${startTime}, Room: ${JSON.stringify(data.arrRooms)}`,
+                    [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK', 
+                            onPress: () => console.log('OK Pressed')
+                        },
+                    ],
+                    {cancelable: false},
+                )
+            })
+            .catch( (err) => {
+                console.log(err)
+                Alert.alert(
+                    'Failed!',
+                    'Internal server error',
+                    [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK', 
+                            onPress: () => console.log('OK Pressed')
+                        },
+                    ],
+                    {cancelable: false},
+                )
+            })
+        }
         // try {
         //     let token = await AsyncStorage.getItem('token')
         //     if (token) {
@@ -284,39 +332,11 @@ const MeetingRoom = (props) => {
         // }
     }
 
-    function bookNow(start, end, date, book) {
-        bookingFunction(start, end, date, book)
-    }
-
-    function nestedFlatlist(rooms) {
-        return (
-            <View style={{marginLeft: 100}}>
-                <FlatList
-                    data={rooms}
-                    renderItem={({item}) => (
-                        <View>
-                            <Text>
-                                item.name
-                            </Text>
-                            <Text>
-                                item.taker
-                            </Text>
-                        </View>
-                    )}
-                />
-            </View>
-        )
-    }
-
     checkEndTime = (start, end) => {
-        console.log(start, end)
-        let endBook = end.split(':')
-        let startBook = start.split(':')
-        if (Number(endBook[0] < Number(startBook[0]))) {
-            console.log('masuk earlier')
+        if (start === '') {
             Alert.alert(
-                'Failed',
-                'Can not set end time earlier than start time!',
+                'Can not set end time',
+                'Please fill start time first',
                 [
                     {
                         text: 'Cancel',
@@ -328,14 +348,16 @@ const MeetingRoom = (props) => {
                         onPress: () => console.log('OK Pressed')
                     },
                 ],
-                {cancelable: false},
-            )
-        } else if (Number(endBook[0])===Number(startBook[0])) {
-            if (Number(endBook[1]) <= Number(startBook[1])) {
-                console.log('masuk earlier minutes')
+                {cancelable: false}
+            )   
+        } else {
+            let endBook = end.split(':')
+            let startBook = start.split(':')
+            if (Number(endBook[0] < Number(startBook[0]))) {
+                console.log('masuk earlier')
                 Alert.alert(
                     'Failed',
-                    'Can not set end time earlier or same as start time!',
+                    'Can not set end time earlier than start time!',
                     [
                         {
                             text: 'Cancel',
@@ -349,24 +371,41 @@ const MeetingRoom = (props) => {
                     ],
                     {cancelable: false},
                 )
+            } else if (Number(endBook[0])===Number(startBook[0])) {
+                if (Number(endBook[1]) <= Number(startBook[1])) {
+                    console.log('masuk earlier minutes')
+                    Alert.alert(
+                        'Failed',
+                        'Can not set end time earlier or same as start time!',
+                        [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK', 
+                                onPress: () => console.log('OK Pressed')
+                            },
+                        ],
+                        {cancelable: false},
+                    )
+                } else {
+                    setEnd(end)
+                }
             } else {
-                console.log(end, 'ini endTime')
                 setEnd(end)
             }
-        } else {
-            console.log(end, 'ini endTime else doang')
-            setEnd(end)
         }
     }
 
-    useEffect( () => {
-        console.log(endTime, 'ini dari state endTime')
-    }, [endTime])
 
     return (
         <View style={{heigth: '100%', width: '100%'}}>
             <View>
-                <Button onPress={() => { changeModal(true)}} title="Tap to view meeting room's floor plan"></Button>
+                <View style={{width: '95%'}}>
+                    <Button onPress={() => { changeModal(true)}} title="Tap to view meeting room's floor plan"></Button>
+                </View>
                 {
                     change ? (
                         <Modal visible={true} transparent={true}>
@@ -387,7 +426,7 @@ const MeetingRoom = (props) => {
                     <View style={{justifyContent: 'center', width: '95%'}}>
                         <View style={{justifyContent: 'center'}}>
                             <DatePicker
-                                style={{width: 200}}
+                                style={{width: '100%'}}
                                 date={date}
                                 mode="date"
                                 placeholder="Select date"
@@ -410,16 +449,17 @@ const MeetingRoom = (props) => {
                                         color: 'white'
                                     }
                                 }}
-                                onDateChange={(date) => {setDate(date); filteredData(date); console.log(date)}}
+                                onDateChange={(date) => {setDate(date); filteredData(date)}}
                             />
                         </View>
-                        <View style={{justifyContent: 'center'}}>
+                        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
                             <DatePicker
-                                style={{width: 200}}
+                                style={{width: '50%'}}
                                 date={startTime}
                                 mode="time"
                                 placeholder="Start time"
                                 format="HH:mm"
+                                showIcon={false}
                                 minuteInterval={30}
                                 confirmBtnText="Ok"
                                 cancelBtnText="Cancel"
@@ -438,16 +478,15 @@ const MeetingRoom = (props) => {
                                         color: 'white'
                                     }
                                 }}
-                                onDateChange={(startMeeting) => {setStart(checkTime(startMeeting))}}
+                                onDateChange={(startMeeting) => {checkStartTime(startMeeting)}}
                             />
-                        </View>
-                        <View style={{justifyContent: 'center'}}>
                             <DatePicker
-                                style={{width: 200}}
+                                style={{width: '50%'}}
                                 date={endTime}
                                 mode="time"
                                 placeholder="End time"
                                 format="HH:mm"
+                                showIcon={false}
                                 minuteInterval={30}
                                 confirmBtnText="Ok"
                                 cancelBtnText="Cancel"
@@ -466,24 +505,11 @@ const MeetingRoom = (props) => {
                                         color: 'white'
                                     }
                                 }}
-                                onDateChange={(endMeeting) => {checkEndTime(startTime, checkTime(endMeeting))}}
+                                onDateChange={(endMeeting) => {checkEndTime(startTime, checkTime(endMeeting)); console.log(endMeeting)}}
                             />
                         </View>
-                        <View>
-                            <FlatList
-                                data={filteredSchedules}
-                                renderItem={({item}) => (
-                                    <View style={{flexDirection: 'column', justifyContent: 'space-between'}}>
-                                        <Text>Date: {item.date}, </Text>
-                                        <Text>Start: {item.startBook}, </Text>
-                                        <Text>End: {item.endBook}, </Text>
-                                        <Text>Booker: {item.UserBook.name}</Text>
-                                        {nestedFlatlist(item.arrRooms)}
-                                    </View>
-                                )}
-                            />
-                        </View>
-                        <View style={{marginTop: 50, flexDirection: 'row', justifyContent: 'space-between'}}>
+                
+                        <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
                             <TouchableOpacity onPress={() => {bookRoom('A')}}>
                                 <View style={{height: 50, width: 50, backgroundColor: listRoom.A.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
                                     <Text>
@@ -513,19 +539,40 @@ const MeetingRoom = (props) => {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                </View>
-                <View style={{marginTop: '100%', right: '0%', position: 'absolute'}}>
-                    <TouchableOpacity onPress={ () => {bookNow(startTime, endTime, date, book)}}>
-                        <View style={{padding: 0, height: 50, width: 100, justifyContent: 'flex-end', flexDirection: 'row',alignContent: 'center', alignItems: 'center', verticalAlign: 'middle'}}>
-                            <View style={{marginRight: '15%'}}>
-                                <Button
-                                    title='Book'
-                                    color='blue'
-                                />
+
+                        <View style={{right: '0%', marginTop: '5%'}}>
+                            <View style={{padding: 0, height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row',alignContent: 'center', alignItems: 'center', verticalAlign: 'middle'}}>
+                                <View style={{width: '45%'}}>
+                                    <Button
+                                        title='Book'
+                                        color='blue'
+                                        onPress={ () => {bookingFunction(startTime, endTime, date, book)}}
+                                    />
+                                </View>
                             </View>
                         </View>
-                    </TouchableOpacity>
+
+                        <View style={{marginTop: 20, padding: 0, height: 200}}>
+                            <FlatList
+                                data={filteredSchedules}
+                                renderItem={({item}) => (
+                                    <View style={{flexDirection: 'column', justifyContent: 'center', marginBottom: 10}}>
+                                        {console.log(item.UserBook)}
+                                        <Text style={{color: 'white'}}>Date: {item.date}, </Text>
+                                        <Text style={{color: 'white'}}>Time: {item.startBook}-{item.endBook}, </Text>
+                                        <Text style={{color: 'white'}}>Room: {item.arrRooms.map( (room) => {return (`${room} `)})}</Text>
+                                        {(item.UserBook) ? (
+                                                <Text style={{color: 'white', fontWeight: 'bold'}}>Booker: {item.UserBook.name}</Text>
+                                            ) : (
+                                                <Text style={{color: 'white', fontWeight: 'bold'}}>Booker: Unknown</Text>
+                                            )
+                                        }
+                                        
+                                    </View>
+                                )}
+                            />
+                        </View>
+                    </View>
                 </View>
             </View>
         </View>

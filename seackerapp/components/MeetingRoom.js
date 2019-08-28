@@ -4,9 +4,8 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import DatePicker from 'react-native-datepicker'
 
 const MeetingRoom = (props) => {
-    const [date, setDate] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
-    const [minMinutes, setMinutes] = useState(new Date().getHours())
-    const [minHours, setHours] = useState(new Date().getMinutes())
+    const [start, setStart] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
+    const [end, setEnd] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
     const [schedules, setSchedules] = useState([])
     const [book, setBook] = useState([])
     const [change, setchange] = useState(false)
@@ -46,8 +45,8 @@ const MeetingRoom = (props) => {
 
     retrieveToken = async () => {
         try {
-          const token = await AsyncStorage.getItem('TASKS');
-          if (value !== null) {
+          const token = await AsyncStorage.getItem('token');
+          if (token !== null) {
             // We have token!!
             axios({
                 method: 'get',
@@ -99,9 +98,9 @@ const MeetingRoom = (props) => {
         }
       };
 
-    // useEffect( () => {
-    //     retrieveToken()
-    // }, [])
+    useEffect( () => {
+        retrieveToken()
+    }, [])
 
     useEffect( () => {
         console.log(book, 'dari use effect')
@@ -153,6 +152,80 @@ const MeetingRoom = (props) => {
         }
     }
     
+    function bookNow(start, end, date, book) {
+        async () => {
+            try {
+                let token = await AsyncStorage.getItem('token')
+                if (token) {
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:3000/booking',
+                        data: {
+                            date: date,
+                            startBook: start,
+                            endBook: end,
+                            arrRooms: book
+                        }
+                    })
+                    .then( (result) => {
+                        console.log('masuk then')
+                        retrieveToken()
+                        Alert.alert(
+                            'Success!',
+                            `Your book is logged now in server, don't forget to mark this on your calendar. Date: ${result.date}, Time: ${startBook}, Room: ${JSON.stringify(result.arrRooms)}`,
+                            [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK', 
+                                    onPress: () => console.log('OK Pressed')
+                                },
+                            ],
+                            {cancelable: false},
+                        )
+                    })
+                } else {
+                    Alert.alert(
+                        'Request rejected',
+                        'Access token is required for post data to server!',
+                        [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK', 
+                                onPress: () => console.log('OK Pressed')
+                            },
+                        ],
+                        {cancelable: false},
+                    )
+                }
+            } catch(err) {
+                console.log(err)
+                Alert.alert(
+                    'Request rejected',
+                    'Access token is required for post data to server!',
+                    [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK', 
+                            onPress: () => console.log('OK Pressed')
+                        },
+                    ],
+                    {cancelable: false},
+                )
+            }
+        }
+    }
 
     function nestedFlatlist(rooms) {
         return (
@@ -200,8 +273,8 @@ const MeetingRoom = (props) => {
                         <View style={{justifyContent: 'center'}}>
                             <DatePicker
                                 style={{width: 200}}
-                                date={date}
-                                mode="date"
+                                date={start}
+                                mode="datetime"
                                 placeholder="Select date"
                                 format="YYYY-MM-DD"
                                 minDate={`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`}
@@ -222,10 +295,36 @@ const MeetingRoom = (props) => {
                                         color: 'white'
                                     }
                                 }}
-                                onDateChange={(date) => {setDate(date)}}
+                                onDateChange={(date) => {setStart(date)}}
                             />
                         </View>
                         <View style={{justifyContent: 'center'}}>
+                            <DatePicker
+                                style={{width: 200}}
+                                date={start}
+                                mode="datetime"
+                                placeholder="End time"
+                                format="YYYY-MM-DD"
+                                minDate={`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`}
+                                confirmBtnText="Ok"
+                                cancelBtnText="Cancel"
+                                customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0
+                                    },
+                                    dateInput: {
+                                        marginLeft: 36,
+                                        color: 'white'
+                                    },
+                                    dateText: {
+                                        color: 'white'
+                                    }
+                                }}
+                                onDateChange={(date) => {setEnd(date)}}
+                            />
                         </View>
                         <View>
                             <FlatList
@@ -276,7 +375,7 @@ const MeetingRoom = (props) => {
                 
             </View>
             <View style={{marginTop: '80%', right: '1%', position: 'absolute'}}>
-                <TouchableOpacity onPress={ () => {console.log(date, book)}}>
+                <TouchableOpacity onPress={ () => {bookNow(start, end, book)}}>
                     <View style={{padding: 0, height: 50, width: 100, justifyContent: 'flex-end', flexDirection: 'row',alignContent: 'center', alignItems: 'center', verticalAlign: 'middle'}}>
                         <View style={{marginRight: '15%'}}>
                             <Button

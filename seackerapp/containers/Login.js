@@ -12,6 +12,7 @@ const Login = (props) => {
             setnik('')
             setpwd('')
         }
+        props.datas = []
     }, [])
 
     // const [suc, setsuc] = useState(false)

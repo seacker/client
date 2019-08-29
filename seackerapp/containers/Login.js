@@ -43,7 +43,7 @@ const Login = (props) => {
                                 </View>
                                 <Text style={{ color: '#9d1601'}}> Your Password : </Text>
                                 <View style={{ margin: 10, borderColor: '#9d1601', width: 250, height: 25, borderWidth: 2, borderRadius: 10 }}>
-                                    <TextInput style={{color: '#9d1601', textAlign: 'center'}} onChangeText={(pwd) => setpwd(pwd)} value={pwd} placeholder='  your password  '></TextInput>
+                                    <TextInput style={{color: '#9d1601', textAlign: 'center'}} secureTextEntry={true} onChangeText={(pwd) => setpwd(pwd)} value={pwd} placeholder='  your password  '></TextInput>
                                 </View>
                                 {/* <View style={{ margin: 10, borderColor: 'white', width: 80, height: 30, borderWidth: 2, borderRadius: 10 }}> */}
                                     <Button onPress={ () => {

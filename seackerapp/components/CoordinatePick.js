@@ -563,7 +563,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -45}}>
                                     <Button onPress={() => { 
                                         setmodals('4')
-                                        choosenSt('4')}} title='' color='#9d1601'></Button>
+                                        choosenSt('4')
+                                        startbook('5d650d9a5b4ee35f0b7455c9', '4')
+                                    }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -580,7 +582,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -75}}>
                                     <Button onPress={() => { 
                                         setmodals('5')
-                                        choosenSt('5')}} title='' color='#9d1601'></Button>
+                                        choosenSt('5')
+                                        startbook('5d650da85b4ee35f0b7455ca', '5')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -601,7 +605,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -80}}>
                                     <Button onPress={() => { 
                                         setmodals('26')
-                                        choosenSt('26')}} title='' color='#9d1601'></Button>
+                                        choosenSt('26')
+                                        startbook('5d650ea55b4ee35f0b7455df', '26')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -616,7 +622,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -80}}>
                                     <Button onPress={() => { 
                                         setmodals('16')
-                                        choosenSt('16')}} title='' color='#9d1601'></Button>
+                                        choosenSt('16')
+                                        startbook('5d650e1f5b4ee35f0b7455d5', '16')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -634,7 +642,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -110}}>
                                     <Button onPress={() => { 
                                         setmodals('27')
-                                        choosenSt('27')}} title='' color='#9d1601'></Button>
+                                        choosenSt('27')
+                                        startbook('5d650eab5b4ee35f0b7455e0', '27')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -649,7 +659,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -110}}>
                                     <Button onPress={() => { 
                                         setmodals('17')
-                                        choosenSt('17')}} title='' color='#9d1601'></Button>
+                                        choosenSt('17')
+                                        startbook('5d650e295b4ee35f0b7455d6', '17')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -666,7 +678,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -140}}>
                                     <Button onPress={() => { 
                                         setmodals('28')
-                                        choosenSt('28')}} title='' color='#9d1601'></Button>
+                                        choosenSt('28')
+                                        startbook('5d650eb55b4ee35f0b7455e1', '28')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -681,7 +695,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -140}}>
                                     <Button onPress={() => { 
                                         setmodals('18')
-                                        choosenSt('18')}} title='' color='#9d1601'></Button>
+                                        choosenSt('18')
+                                        startbook('5d650e335b4ee35f0b7455d7', '18')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -698,7 +714,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -170}}>
                                     <Button onPress={() => { 
                                         setmodals('29')
-                                        choosenSt('29')}} title='' color='#9d1601'></Button>
+                                        choosenSt('29')
+                                        startbook('5d650ebb5b4ee35f0b7455e2', '29')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -713,7 +731,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -170}}>
                                     <Button onPress={() => { 
                                         setmodals('19')
-                                        choosenSt('19')}} title='' color='#9d1601'></Button>
+                                        choosenSt('19')
+                                        startbook('5d650e3a5b4ee35f0b7455d8', '19')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -730,7 +750,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -200}}>
                                     <Button onPress={() => { 
                                         setmodals('30')
-                                        choosenSt('30')}} title='' color='#9d1601'></Button>
+                                        choosenSt('30')
+                                        startbook('5d650ec45b4ee35f0b7455e3', '30')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -745,7 +767,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -200}}>
                                     <Button onPress={() => { 
                                         setmodals('20')
-                                        choosenSt('20')}} title='' color='#9d1601'></Button>
+                                        choosenSt('20')
+                                        startbook('5d650ec45b4ee35f0b7455e3', '20')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -764,7 +788,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -80}}>
                                     <Button onPress={() => { 
                                         setmodals('6')
-                                        choosenSt('6')}} title='' color='#9d1601'></Button>
+                                        choosenSt('6')
+                                        startbook('5d650db65b4ee35f0b7455cb', '6')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -782,7 +808,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -110}}>
                                     <Button onPress={() => { 
                                         setmodals('7')
-                                        choosenSt('7')}} title='' color='#9d1601'></Button>
+                                        choosenSt('7')
+                                        startbook('5d650dc25b4ee35f0b7455cc', '7')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -799,7 +827,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -140}}>
                                     <Button onPress={() => { 
                                         setmodals('8')
-                                        choosenSt('8')}} title='' color='#9d1601'></Button>
+                                        choosenSt('8')
+                                        startbook('5d650db65b4ee35f0b7455cb', '8')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -817,7 +847,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -170}}>
                                     <Button onPress={() => { 
                                         setmodals('9')
-                                        choosenSt('9')}} title='' color='#9d1601'></Button>
+                                        choosenSt('9')
+                                        startbook('5d650db65b4ee35f0b7455d650dd45b4ee35f0b7455ce5cb', '9')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -835,7 +867,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -200}}>
                                     <Button onPress={() => { 
                                         setmodals('10')
-                                        choosenSt('10')}} title='' color='#9d1601'></Button>
+                                        choosenSt('10')
+                                        startbook('5d650db65b4ee35', '10')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }

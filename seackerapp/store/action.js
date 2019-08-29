@@ -8,7 +8,7 @@ export function login(value){
             type: 'LOADING',
             state: true
         })
-        axios.post('http://localhost:3000/users/login', {
+        axios.post('http://localhost:3001/users/login', {
             nik : value.nik,
             password : value.password
         })
@@ -40,7 +40,7 @@ export function fetchData(){
             type: 'LOADING',
             state: true
         })
-        axios.get('http://localhost:3000/seat')
+        axios.get('http://localhost:3001/seat')
         .then(({data}) => {
             // console.log('ini data success : ', data)
             dispatch({
@@ -75,7 +75,7 @@ export function oneData(id, token){
             type: 'LOADING',
             state: true
         })
-        axios.patch(`http://localhost:3000/seat/changeState/${id}`, {},{
+        axios.patch(`http://localhost:3001/seat/changeState/${id}`, {},{
             headers: {
                 token: token
             }

@@ -10,28 +10,119 @@ const MeetingRoom = (props) => {
         let temp = time.split(':')
         let roundingMinutes
         let roundingHours
-
-        if ( Number(temp[1])>0 && Number(temp[1])<30) {
-            roundingMinutes = '30'
-            roundingHours = temp[0]
-        } else if (Number(temp[1])>30 && Number(temp[1])<=60) {
-            roundingMinutes = '00'
-            if (String(temp[0]).length === 1) {
-                roundingHours = `0${temp[0]}`
-            } else {
+        console.log(temp[0], temp[1])
+        if (Number(temp[0]) < 9 || (Number(temp[0] > 18))) {
+            Alert.alert(
+                'Not at office hours',
+                'Meeting room can only booked at office hours'
+            )
+        } else if (temp[0] == '18') {
+            if (Number(temp[1] == 0)) {
                 roundingHours = temp[0]
+                roundingMinutes = temp[1]
+                return `${roundingHours}:${roundingMinutes}`
+            } else {
+                Alert.alert(
+                    'Not at office hours',
+                    'Meeting room can only booked at office hours'
+                )
             }
         } else {
-            roundingMinutes = temp[1]
-            roundingHours = temp[0]
+            if ( Number(temp[1])>0 && Number(temp[1])<30) {
+                roundingMinutes = '30'
+                roundingHours = temp[0]
+            } else if (Number(temp[1])>30 && Number(temp[1])<=60) {
+                roundingMinutes = '00'
+                if (String(temp[0]).length === 1) {
+                    roundingHours = `0${temp[0]+1}`
+                } else {
+                    roundingHours = String(Number(temp[0])+1)
+                }
+            } else {
+                roundingMinutes = temp[1]
+                roundingHours = temp[0]
+            }
+            return `${roundingHours}:${roundingMinutes}`
         }
-        return `${roundingHours}:${roundingMinutes}`
     }
 
     const [startTime, setStart] = useState('')
     const [endTime, setEnd] = useState('')
     const [date, setDate] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
-    const [schedules, setSchedules] = useState([])
+    const [schedules, setSchedules] = useState([
+        {
+            date: '2019-08-29',
+            arrRooms: ['A', 'B'],
+            startBook: '09:00',
+            endBook: '12:00',
+            UserBook: {
+                name: 'Stephen'
+            }
+        },
+        {
+            date: '2019-08-29',
+            arrRooms: ['C'],
+            startBook: '09:00',
+            endBook: '12:00',
+            UserBook: {
+                name: 'Indi'
+            }
+        },
+        {
+            date: '2019-08-30',
+            arrRooms: ['A', 'B'],
+            startBook: '10:30',
+            endBook: '12:00',
+            UserBook: {
+                name: 'Mikel'
+            }
+        },
+        {
+            date: '2019-08-31',
+            arrRooms: ['C', 'D'],
+            startBook: '13:00',
+            endBook: '15:00',
+            UserBook: {
+                name: 'Novita'
+            }
+        },
+        {
+            date: '2019-09-01',
+            arrRooms: ['A', 'B', 'C'],
+            startBook: '09:00',
+            endBook: '12:00',
+            UserBook: {
+                name: 'Friska'
+            }
+        },
+        {
+            date: '2019-09-01',
+            arrRooms: ['A', 'B','C','D'],
+            startBook: '13:00',
+            endBook: '16:00',
+            UserBook: {
+                name: 'Mikel'
+            }
+        },
+        {
+            date: '2019-08-29',
+            arrRooms: ['A', 'B'],
+            startBook: '12:30',
+            endBook: '15:00',
+            UserBook: {
+                name: 'Indi'
+            }
+        },
+        {
+            date: '2019-08-29',
+            arrRooms: ['A', 'B'],
+            startBook: '15:30',
+            endBook: '18:00',
+            UserBook: {
+                name: 'Novita'
+            }
+        }
+    ])
     const [book, setBook] = useState([])
     const [change, setchange] = useState(false)
     const [filteredSchedules, setFiltered] = useState([])
@@ -69,47 +160,121 @@ const MeetingRoom = (props) => {
         }
     }]
 
-    function filteredData(selectedDate) {
-        console.log(schedule.date, selectedDate, '<======== cek similarity')
-        let filtered = schedules.filter( (schedule) => {
-            if (schedule.date === selectedDate) {
-                return schedule
+    function filteredData(selectedDate, selectedStartTime) {
+        setListRoom(
+            {
+                A: {
+                    index: 'A',
+                    color: 'gainsboro',
+                    enabled: true
+                },
+                B: {
+                    index: 'B',
+                    color: 'gainsboro',
+                    enabled: true
+                },
+                C: {
+                    index: 'C',
+                    color: 'gainsboro',
+                    enabled: true
+                },
+                D: {
+                    index: 'D',
+                    color: 'gainsboro',
+                    enabled: true
+                }
             }
-        })
-        setFiltered(filtered)
+        )
+
+        let filtered = []
+
+        if (selectedStartTime) {
+            let dateNow = selectedDate.split('-')
+
+            if (dateNow[0].length === 1) {
+                dateNow[0] = `0${dateNow[0]}`
+            }
+            if (dateNow[1].length === 1) {
+                dateNow[1] = `0${dateNow[1]}`
+            }
+
+            let dateFormatted = dateNow.join('-')
+            let temp = selectedStartTime.split(':')
+            schedules.forEach( (schedule) => {
+                let temp2 = schedule.startBook.split(':')
+                
+                if (schedule.date === dateFormatted) {
+                    console.log('masuk ke kondisi schedule.date === selectedDate')
+                    if (`${temp[0]}:${temp[1]}` === `${temp2[0]}:${temp2[1]}`) {
+                        console.log('masuk ke kondisi jam book dengan schedule sama')
+                        filtered.push(schedule)
+                        console.log(schedule.arrRooms)
+                        schedule.arrRooms.forEach( (room) => {
+                            for (var key in listRoom) {
+                                if (key === room) {
+                                    setListRoom({
+                                        ...listRoom,
+                                        [key]: {
+                                            ...listRoom[key],
+                                            color: 'red',
+                                            enabled: false
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                        setFiltered(filtered)
+                    } else {
+                        console.log(temp, temp2, 'ga sama jam nya')
+                        console.log('selectedStartTime ga sama dengan schedule')
+                    }
+                } else {
+                    console.log(schedule.date, dateFormatted, 'ga sama')
+                }
+            })
+        } else {
+            schedules.forEach( (schedule) => {
+                console.log(schedule.date, selectedDate, '<= cek similarity')
+                if (schedule.date === selectedDate) {
+                    console.log(schedule.date, selectedDate, '<= samaaa')
+                    filtered.push(schedule)
+                }
+            })
+            setFiltered(filtered)
+        }
     }
 
     function retrieveSchedules() {
-        axios({
-            method: 'get',
-            url: 'http://13.251.59.155/booking',
-            headers: {
-                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
-            }
-        })
-        .then( ({data}) => {
-            console.log('masuk then get schedules', data)
-            setSchedules(data)
-        })
-        .catch( (err) => {
-            console.log(err)
-            Alert.alert(
-                'Error fetch data from server',
-                `Detail: ${err.message}`,
-                [
-                    {
-                      text: 'Cancel',
-                      onPress: () => console.log('Cancel Pressed'),
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'OK', 
-                      onPress: () => console.log('OK Pressed')
-                    },
-                ],
-                {cancelable: false},
-            )
-        })
+        // axios({
+        //     method: 'get',
+        //     url: 'http://13.251.59.155/booking',
+        //     headers: {
+        //         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
+        //     }
+        // })
+        // .then( ({data}) => {
+        //     console.log('masuk then get schedules', data)
+        //     setSchedules(data)
+        // })
+        // .catch( (err) => {
+        //     console.log(err)
+        //     Alert.alert(
+        //         'Error fetch data from server',
+        //         `Detail: ${err.message}`,
+        //         [
+        //             {
+        //               text: 'Cancel',
+        //               onPress: () => console.log('Cancel Pressed'),
+        //               style: 'cancel',
+        //             },
+        //             {
+        //               text: 'OK', 
+        //               onPress: () => console.log('OK Pressed')
+        //             },
+        //         ],
+        //         {cancelable: false},
+        //     )
+        // })
     }
     // retrieveData = async () => {
     //     try {
@@ -139,7 +304,7 @@ const MeetingRoom = (props) => {
     //   };
 
     useEffect( () => {
-        retrieveSchedules()
+        // retrieveSchedules()
     }, [])
 
     useEffect( () => {
@@ -155,8 +320,7 @@ const MeetingRoom = (props) => {
                         ...listRoom,
                         [key]: {
                             ...listRoom[key],
-                            color: 'red',
-                            enabled: false
+                            color: 'red'
                         }
                     })
                 }
@@ -198,8 +362,7 @@ const MeetingRoom = (props) => {
                         ...listRoom,
                         [oneRoom]: {
                             ...listRoom[oneRoom],
-                            color: 'gainsboro',
-                            enabled: true
+                            color: 'gainsboro'
                         }
                     })
 
@@ -232,62 +395,96 @@ const MeetingRoom = (props) => {
                 {cancelable: false},
             )
         } else {
-            axios({
-                method: 'post',
-                url: 'http://13.251.59.155/booking',
-                headers: {
-                    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
-                },
-                data: {
-                    date: date,
+            setSchedules([
+                ...schedules,
+                {
+                    date,
                     startBook: start,
                     endBook: end,
-                    arrRooms: bookRooms
+                    arrRooms: bookRooms,
+                    UserBook: {
+                        name: 'Anonymous'
+                    }
                 }
-            })
-            .then( ({data}) => {
-                console.log('masuk then')
-                retrieveSchedules()
-                Alert.alert(
-                    'Success!',
-                    `
-    Your book is logged now on server
-    Mark this on your calendar 
-    Date: ${data.date}
-    Time: ${startTime}, Room: ${JSON.stringify(data.arrRooms)}`,
-                    [
-                        {
-                            text: 'Cancel',
-                            onPress: () => console.log('Cancel Pressed'),
-                            style: 'cancel',
-                        },
-                        {
-                            text: 'OK', 
-                            onPress: () => console.log('OK Pressed')
-                        },
-                    ],
-                    {cancelable: false},
-                )
-            })
-            .catch( (err) => {
-                console.log(err)
-                Alert.alert(
-                    'Failed!',
-                    'Internal server error',
-                    [
-                        {
-                            text: 'Cancel',
-                            onPress: () => console.log('Cancel Pressed'),
-                            style: 'cancel',
-                        },
-                        {
-                            text: 'OK', 
-                            onPress: () => console.log('OK Pressed')
-                        },
-                    ],
-                    {cancelable: false},
-                )
-            })
+            ])
+            filteredData(date, start)
+            Alert.alert(
+                'Success!',
+                `
+Your book is logged now on server
+Mark this on your calendar 
+Date: ${date}
+Time: ${startTime}, Room: ${JSON.stringify(bookRooms)}`,
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK', 
+                        onPress: () => console.log('OK Pressed')
+                    },
+                ],
+                {cancelable: false},
+            )
+
+    //         axios({
+    //             method: 'post',
+    //             url: 'http://13.251.59.155/booking',
+    //             headers: {
+    //                 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
+    //             },
+    //             data: {
+    //                 date: date,
+    //                 startBook: start,
+    //                 endBook: end,
+    //                 arrRooms: bookRooms
+    //             }
+    //         })
+    //         .then( ({data}) => {
+    //             console.log('masuk then')
+    //             retrieveSchedules()
+    //             Alert.alert(
+    //                 'Success!',
+    //                 `
+    // Your book is logged now on server
+    // Mark this on your calendar 
+    // Date: ${data.date}
+    // Time: ${startTime}, Room: ${JSON.stringify(data.arrRooms)}`,
+    //                 [
+    //                     {
+    //                         text: 'Cancel',
+    //                         onPress: () => console.log('Cancel Pressed'),
+    //                         style: 'cancel',
+    //                     },
+    //                     {
+    //                         text: 'OK', 
+    //                         onPress: () => console.log('OK Pressed')
+    //                     },
+    //                 ],
+    //                 {cancelable: false},
+    //             )
+    //         })
+    //         .catch( (err) => {
+    //             console.log(err)
+    //             Alert.alert(
+    //                 'Failed!',
+    //                 'Internal server error',
+    //                 [
+    //                     {
+    //                         text: 'Cancel',
+    //                         onPress: () => console.log('Cancel Pressed'),
+    //                         style: 'cancel',
+    //                     },
+    //                     {
+    //                         text: 'OK', 
+    //                         onPress: () => console.log('OK Pressed')
+    //                     },
+    //                 ],
+    //                 {cancelable: false},
+    //             )
+    //         })
         }
         // try {
         //     let token = await AsyncStorage.getItem('token')
@@ -398,7 +595,86 @@ const MeetingRoom = (props) => {
             }
         }
     }
+    
+    let maximum
+    switch (new Date().getMonth()+1) {
+        case 1:
+            if (new Date().getDate() + 7 > 31) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 31}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 2:
+            if (new Date().getDate() + 7 > 28) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 28}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 3:
+            if (new Date().getDate() + 7 > 31) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 31}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 4:
+            if (new Date().getDate() + 7 > 30) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 30}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 5:
+            if (new Date().getDate() + 7 > 31) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 31}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 6:
+            if (new Date().getDate() + 7 > 30) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 30}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 7:
+            if (new Date().getDate() + 7 > 30) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 30}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 8:
+            if (new Date().getDate() + 7 > 31) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 31}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 9:
+            if (new Date().getDate() + 7 > 30) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 30}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 10:
+            if (new Date().getDate() + 7 > 31) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 31}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 11:
+            if (new Date().getDate() + 7 > 30) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 30}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        case 12:
+            if (new Date().getDate() + 7 > 31) {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+2}-${new Date().getDate() + 7 - 31}`
+            } else {
+                maximum = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+            }
+        default:
+            break;
+    }
 
+    console.log(maximum)
 
     return (
         <View style={{heigth: '100%', width: '100%'}}>
@@ -432,6 +708,7 @@ const MeetingRoom = (props) => {
                                 placeholder="Select date"
                                 format="YYYY-MM-DD"
                                 minDate={`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`}
+                                maxDate={maximum}
                                 confirmBtnText="Ok"
                                 cancelBtnText="Cancel"
                                 customStyles={{
@@ -478,7 +755,7 @@ const MeetingRoom = (props) => {
                                         color: 'white'
                                     }
                                 }}
-                                onDateChange={(startMeeting) => {checkStartTime(startMeeting)}}
+                                onDateChange={(startMeeting) => {checkStartTime(startMeeting); filteredData(date, startMeeting)}}
                             />
                             <DatePicker
                                 style={{width: '50%'}}
@@ -510,28 +787,28 @@ const MeetingRoom = (props) => {
                         </View>
                 
                         <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <TouchableOpacity onPress={() => {bookRoom('A')}}>
+                            <TouchableOpacity disabled={!listRoom.A.enabled} onPress={() => {bookRoom('A')}}>
                                 <View style={{height: 50, width: 50, backgroundColor: listRoom.A.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
                                     <Text>
                                         A    
                                     </Text>                            
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {bookRoom('B')}}>
+                            <TouchableOpacity disabled={!listRoom.B.enabled} onPress={() => {bookRoom('B')}}>
                                 <View style={{height: 50, width: 50, backgroundColor: listRoom.B.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
                                     <Text>
                                         B
                                     </Text>                            
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {bookRoom('C')}}>
+                            <TouchableOpacity disabled={!listRoom.C.enabled} onPress={() => {bookRoom('C')}}>
                                 <View style={{height: 50, width: 50, backgroundColor: listRoom.C.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
                                     <Text>
                                         C 
                                     </Text>                          
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {bookRoom('D')}}>
+                            <TouchableOpacity disabled={!listRoom.D.enabled} onPress={() => {bookRoom('D')}}>
                                 <View style={{height: 50, width: 50, backgroundColor: listRoom.D.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
                                     <Text style={{margin: 'auto'}}>
                                         D    

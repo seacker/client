@@ -1,32 +1,32 @@
 import React from 'react'
-import { createStackNavigator, createAppContainer} from 'react-navigation'
+import { createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation'
 
 import LandingPage from '../containers/LandingPage'
 import Seat from '../containers/Seat'
 import Coordinate from '../components/CoordinatePick'
+import User from '../containers/User'
+import Login from '../containers/Login'
 
+// const NoBackNav = createSwitchNavigator({
+//     Login: Login,
+//     User: User,
+//     LandingPage: StackNavigator
+// },{
+//     initialRouteName: 'Login'
+// })
 const StackNavigator = createStackNavigator({
     LandingPage: {
         screen: LandingPage,
     },
     Seat: {
         screen: Seat,
-        // navigationOption: () => ({
-        //     title: 'Choose Your 😇',
-        //     headerStyle: {
-        //         height: 23,
-        //         backgrounColor: '#2c3c50',
-        //     },
-        //     headerTitleStyle: {
-        //         color: '#f03f39'
-        //     },
-        // })
     },
-    Coordinate: {
-        screen: Coordinate
-    }
+    Login: Login,
+    User: User,
+    //sementara di createStackNav dulu
+    Coordinate: {screen: Coordinate},
 }, {
-    initialRouteName: 'LandingPage'
+    initialRouteName: 'Login'
 })
 
 

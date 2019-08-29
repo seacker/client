@@ -34,40 +34,35 @@ const Seat = (props) => {
     }, [one, meeting, auditorium])
 
     return (
-        <ImageBackground source={require('../assets/Seacker-2.png')} style={{width: '100%', height: '100%'}}>
-            <View style={{ margin: 25}}>
-                {/* <Text style={{ color: 'white'}}> Ini untuk Seat </Text> */}
-                <SafeAreaView>
-                    {
-                        one && (
-                            <View>
-                                <View>
-                                    <OneSeat navigation={props.navigation}/>
-                                </View>
+        <View style={{flex: 1}}>
+            <ImageBackground source={require('../assets/background.png')} style={{width: '100%', height: '100%'}}>
+                <View style={{flex: 1}}></View>
+                <View style={{flex: 2, alignItems: 'center'}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center'}}>
+                            <View style={{}}>
+                                <SafeAreaView>
+                                    {
+                                        one && (
+                                            <OneSeat navigation={props.navigation}/>
+                                        )
+                                    }
+                                    {
+                                        meeting && (
+                                            <MeetingRoom/>
+                                        )
+                                    }
+                                    {
+                                        auditorium && (
+                                            <Auditorium/>
+                                        )
+                                    }
+                                </SafeAreaView>
                             </View>
-                        )
-                    }
-                    {
-                        meeting && (
-                            <View>
-                                <View>
-                                    <MeetingRoom/>
-                                </View>
-                            </View>
-                        )
-                    }
-                    {
-                        auditorium && (
-                            <View>
-                                <View>
-                                    <Auditorium/>
-                                </View>
-                            </View>
-                        )
-                    }
-                </SafeAreaView>
-            </View>
-        </ImageBackground>
+                    </View>
+                </View>
+                <View style={{flex: 1}}></View>
+            </ImageBackground>
+        </View>
     )
 }
 

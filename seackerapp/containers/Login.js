@@ -3,6 +3,14 @@ import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAr
 import {connect} from 'react-redux'
 import {login, fetchData} from '../store/action'
 
+const mapState = (state) => {
+    return {
+        ...state
+    }
+}
+
+const mapDispatch = {login, fetchData}
+
 const Login = (props) => {
     useEffect(() => {
         props.fetchData()
@@ -26,9 +34,11 @@ const Login = (props) => {
         if(value.nik != '' && value.pwd != ''){
             // setsuc1(false)
             await props.login(value)
-            props.navigation.navigate('LandingPage')
         }
     }
+    console.log(props.state)
+    
+    props.navigation.navigate('LandingPage', { user : props.state.user})
     return (
         <View style={{flex: 1}}>
             <ImageBackground source={require('../assets/background.png')} style={{width: '100%', height: '100%'}}>
@@ -65,12 +75,5 @@ const Login = (props) => {
     )
 }
 
-const mapState = (state) => {
-    return {
-        ...state
-    }
-}
-
-const mapDispatch = {login, fetchData}
 
 export default connect(mapState, mapDispatch)(Login)

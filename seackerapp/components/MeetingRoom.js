@@ -156,7 +156,7 @@ const MeetingRoom = (props) => {
     const images = [{
         name: 'Meeting Room',
         props: {
-            source: require('../assets/meetingRoom.png')
+            source: require('../assets/background.png')
         }
     }]
 
@@ -693,7 +693,7 @@ Time: ${startTime}, Room: ${JSON.stringify(bookRooms)}`,
                         <Text></Text>
                     )
                 }
-                <View style={{ backgroundColor: '#2C3C50', justifyContent: 'center', flexDirecttion: 'column'}}>
+                <View style={{justifyContent: 'center', flexDirecttion: 'column'}}>
                     <View style={{justifyContent: 'center', width: '95%', marginBottom: 5}}>
                         <Text style={{color: 'white'}}>
                             Choose your time: 

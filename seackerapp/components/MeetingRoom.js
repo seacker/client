@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, Button, Modal, FlatList, Alert, TouchableOpacity, ImageBackground} from 'react-native'
+import {View, Text, Button, Modal, FlatList, Alert, TouchableOpacity, ImageBackground, AsyncStorage} from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer';
 import DatePicker from 'react-native-datepicker'
 import axios from 'axios'
@@ -185,17 +185,16 @@ const MeetingRoom = (props) => {
                 let temp2 = schedule.startBook.split(':')
                 
                 if (schedule.date === dateFormatted) {
-                    console.log('masuk ke kondisi schedule.date === selectedDate')
                     if (`${temp[0]}:${temp[1]}` === `${temp2[0]}:${temp2[1]}`) {
                         console.log('masuk ke kondisi jam book dengan schedule sama')
                         filtered.push(schedule)
-                        console.log(schedule.arrRooms)
                         schedule.arrRooms.forEach( (room) => {
                             for (var key in listRoom) {
-                                if (key === room) {
-                                    console.log('masuk sama lagi nih', key, room)
-                                    // listRoom[key].color = 'red'
-                                    // console.log(listRoom[key])
+                                if (room === key) {
+                                    console.log('masuk sama lagi nih', room, key)
+                                    listRoom[room].color = 'red'
+                                    listRoom[room].enabled = false
+                                    console.log(listRoom[room])
                                     setListRoom({
                                         ...listRoom,
                                         [room]: {
@@ -228,67 +227,70 @@ const MeetingRoom = (props) => {
         }
     }
 
-    function retrieveSchedules() {
-        // axios({
-        //     method: 'get',
-        //     url: 'http://13.251.59.155/booking',
-        //     headers: {
-        //         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
-        //     }
-        // })
-        // .then( ({data}) => {
-        //     console.log('masuk then get schedules', data)
-        //     setSchedules(data)
-        // })
-        // .catch( (err) => {
-        //     console.log(err)
-        //     Alert.alert(
-        //         'Error fetch data from server',
-        //         `Detail: ${err.message}`,
-        //         [
-        //             {
-        //               text: 'Cancel',
-        //               onPress: () => console.log('Cancel Pressed'),
-        //               style: 'cancel',
-        //             },
-        //             {
-        //               text: 'OK', 
-        //               onPress: () => console.log('OK Pressed')
-        //             },
-        //         ],
-        //         {cancelable: false},
-        //     )
-        // })
-    }
-    // retrieveData = async () => {
-    //     try {
-    //       const token = await AsyncStorage.getItem('token');
-    //       if (token !== null) {
-    //         // We have token!!
-            
-    //       }
-    //     } catch (error) {
-    //       // Error retrieving token
-    //       Alert.alert(
-    //         'Request rejected',
-    //         'Access token is required to access data from server!',
-    //         [
-    //           {
-    //             text: 'Cancel',
-    //             onPress: () => console.log('Cancel Pressed'),
-    //             style: 'cancel',
-    //           },
-    //           {
-    //             text: 'OK', 
-    //             onPress: () => console.log('OK Pressed')},
-    //         ],
-    //         {cancelable: false},
-    //       );
-    //     }
-    //   };
+    retrieveSchedules = () => {
+        AsyncStorage.getItem('token', (err, token)=> {
+            if (err) {
+                console.log(err, 'ini dari asyncstorage')
+                Alert.alert(
+                    'Request rejected',
+                    'Access token is required to access data from server!',
+                    [
+                      {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'OK', 
+                        onPress: () => console.log('OK Pressed')},
+                    ],
+                    {cancelable: false},
+                )
+            } else {
+                console.log(token, 'ini dari asyncstorage')
+                axios({
+                    method: 'get',
+                    url: 'http://13.229.145.18/booking',
+                    headers: {
+                        token: token
+                    }
+                })
+                .then( ({data}) => {
+                    console.log('masuk then get schedules', data)
+                    // setSchedules(data)
+                    let arrTemp = []
+                    data.forEach( (datum) => {
+                        datum.date = datum.date.substring(0, 10)
+                        console.log(datum.date)
+                        arrTemp.push(datum)
+                    })
+                    setSchedules(arrTemp)
+                })
+                .catch( (err) => {
+                    console.log(err)
+                    Alert.alert(
+                        'Error fetch data from server',
+                        `Detail: ${err.message}`,
+                        [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK', 
+                                onPress: () => console.log('OK Pressed')
+                            },
+                        ],
+                        {cancelable: false},
+                    )
+                })
+            }
+        })
+      };
 
     useEffect( () => {
-        // retrieveSchedules()
+        retrieveSchedules()
     }, [])
 
     useEffect( () => {
@@ -379,138 +381,83 @@ const MeetingRoom = (props) => {
                 {cancelable: false},
             )
         } else {
-            setSchedules([
-                ...schedules,
-                {
-                    date,
-                    startBook: start,
-                    endBook: end,
-                    arrRooms: bookRooms,
-                    UserBook: {
-                        name: 'Anonymous'
-                    }
+            AsyncStorage.getItem('token', (err, token) => {
+                if (err) {
+                    console.log(err, 'ini dari asyncstorage')
+                    Alert.alert(
+                        'Request rejected',
+                        'Access token is required to access data from server!',
+                        [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK', 
+                            onPress: () => console.log('OK Pressed')},
+                        ],
+                        {cancelable: false},
+                    )
+                } else {
+                    axios({
+                        method: 'post',
+                        url: 'http://13.229.145.18/booking',
+                        headers: {
+                            token: token
+                        },
+                        data: {
+                            date: new Date(date),
+                            arrRooms: bookRooms,
+                            startBook: start,
+                            endBook: end,
+                        }
+                    })
+                    .then( ({data}) => {
+                        console.log(data)
+                        setSchedules([
+                            ...schedules,
+                            {
+                                date: data.date.substring(0, 10),
+                                startBook: data.startBook,
+                                endBook: data.endBook,
+                                arrRooms: data.arrRooms,
+                                UserBook: {
+                                    name: data.UserBook.name
+                                }
+                            }
+                        ])
+                        filteredData(date, start)
+                        Alert.alert(
+                            'Success!',
+                            `
+            Your book is logged now on server
+            Mark this on your calendar 
+            Date: ${date}
+            Time: ${startTime}, Room: ${JSON.stringify(bookRooms)}`,
+                            [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK', 
+                                    onPress: () => console.log('OK Pressed')
+                                },
+                            ],
+                            {cancelable: false},
+                        )
+                    })
+                    .catch( (err) => {
+                        Alert.alert(
+                            `Error`,
+                            `Failed sending data to server, detail: ${err.message} `
+                        )
+                    })
                 }
-            ])
-            filteredData(date, start)
-            Alert.alert(
-                'Success!',
-                `
-Your book is logged now on server
-Mark this on your calendar 
-Date: ${date}
-Time: ${startTime}, Room: ${JSON.stringify(bookRooms)}`,
-                [
-                    {
-                        text: 'Cancel',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'OK', 
-                        onPress: () => console.log('OK Pressed')
-                    },
-                ],
-                {cancelable: false},
-            )
-
-    //         axios({
-    //             method: 'post',
-    //             url: 'http://13.251.59.155/booking',
-    //             headers: {
-    //                 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNjYyNDAzNDA0MGQ4NDI5ZmE4NTEwMSIsIm5payI6IkNOMDM3Njg2IiwiaWF0IjoxNTY2OTc0OTk4fQ.WCd51oks1dXFgmSaK9Uf20eu5FIkpPh8Ds8qYPQrewM'
-    //             },
-    //             data: {
-    //                 date: date,
-    //                 startBook: start,
-    //                 endBook: end,
-    //                 arrRooms: bookRooms
-    //             }
-    //         })
-    //         .then( ({data}) => {
-    //             console.log('masuk then')
-    //             retrieveSchedules()
-    //             Alert.alert(
-    //                 'Success!',
-    //                 `
-    // Your book is logged now on server
-    // Mark this on your calendar 
-    // Date: ${data.date}
-    // Time: ${startTime}, Room: ${JSON.stringify(data.arrRooms)}`,
-    //                 [
-    //                     {
-    //                         text: 'Cancel',
-    //                         onPress: () => console.log('Cancel Pressed'),
-    //                         style: 'cancel',
-    //                     },
-    //                     {
-    //                         text: 'OK', 
-    //                         onPress: () => console.log('OK Pressed')
-    //                     },
-    //                 ],
-    //                 {cancelable: false},
-    //             )
-    //         })
-    //         .catch( (err) => {
-    //             console.log(err)
-    //             Alert.alert(
-    //                 'Failed!',
-    //                 'Internal server error',
-    //                 [
-    //                     {
-    //                         text: 'Cancel',
-    //                         onPress: () => console.log('Cancel Pressed'),
-    //                         style: 'cancel',
-    //                     },
-    //                     {
-    //                         text: 'OK', 
-    //                         onPress: () => console.log('OK Pressed')
-    //                     },
-    //                 ],
-    //                 {cancelable: false},
-    //             )
-    //         })
+            })
         }
-        // try {
-        //     let token = await AsyncStorage.getItem('token')
-        //     if (token) {
-        //         console.log(token)
-        //     } else {
-        //         Alert.alert(
-        //             'Request rejected',
-        //             'Access token is required for post data to server!',
-        //             [
-        //                 {
-        //                     text: 'Cancel',
-        //                     onPress: () => console.log('Cancel Pressed'),
-        //                     style: 'cancel',
-        //                 },
-        //                 {
-        //                     text: 'OK', 
-        //                     onPress: () => console.log('OK Pressed')
-        //                 },
-        //             ],
-        //             {cancelable: false},
-        //         )
-        //     }
-        // } catch(err) {
-        //     console.log(err)
-        //     Alert.alert(
-        //         'Request rejected',
-        //         'Access token is required for post data to server!',
-        //         [
-        //             {
-        //                 text: 'Cancel',
-        //                 onPress: () => console.log('Cancel Pressed'),
-        //                 style: 'cancel',
-        //             },
-        //             {
-        //                 text: 'OK', 
-        //                 onPress: () => console.log('OK Pressed')
-        //             },
-        //         ],
-        //         {cancelable: false},
-        //     )
-        // }
     }
 
     checkEndTime = (start, end) => {

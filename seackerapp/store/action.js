@@ -3,34 +3,28 @@ import axios from 'axios'
 export function login(value){
     console.log('ini sampe action ', value)
     return (dispatch, state) => {
-        console.log("masuk sini test123")
-        dispatch({
-            type: 'LOADING',
-            state: true
-        })
-        axios.post('http://localhost:3001/users/login', {
-            nik : value.nik,
-            password : value.password
-        })
-        .then(({data}) => {
-            console.log('ini data success : ', data)
+
+        if (value) {
+            console.log("masuk sini test123")
+            dispatch({
+                type: 'LOADING',
+                state: true
+            })
             dispatch({
                 type: 'LOGIN',
-                state: data
+                state: value
             })
             dispatch({
                 type: 'LOADING',
                 state: false
             })
-        })
-        .catch((err) => {
-            console.log(err)
+        } else {
             dispatch({
                 type: 'ERRORLOGIN',
                 state: false,
                 data: err
             })
-        })
+        }
     }
 }
 export function fetchData(){
@@ -40,7 +34,7 @@ export function fetchData(){
             type: 'LOADING',
             state: true
         })
-        axios.get('http://localhost:3001/seat')
+        axios.get('http://13.229.145.18/seat')
         .then(({data}) => {
             // console.log('ini data success : ', data)
             dispatch({
@@ -75,7 +69,7 @@ export function oneData(id, token){
             type: 'LOADING',
             state: true
         })
-        axios.patch(`http://localhost:3001/seat/changeState/${id}`, {},{
+        axios.patch(`http://13.229.145.18/seat/changeState/${id}`, {},{
             headers: {
                 token: token
             }

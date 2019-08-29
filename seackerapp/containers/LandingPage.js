@@ -14,10 +14,17 @@ const LandingPage = (props) => {
     const [auditorium, setauditorium] = useState(false)
     
     let [user, setuser] = useState({})
-    
+    const [count, setcount] = useState(0)
     useEffect(() => {
         console.log('landing page ', props.navigation.state)
         console.log('ini user login, ', props.user)
+        let c = 1
+        props.datas.forEach(element => {
+            if(element.taker === null){
+                c++
+            }
+        });
+        setcount(c)
         // props.error.status ? (props.navigation.navigate('Login')) : (setuser = props.user.user.name)
     }, [])
 
@@ -81,8 +88,8 @@ const LandingPage = (props) => {
             <View style={{flex: 1, alignItems: 'center', paddingTop: 20}}>
                 {/* <Text>{props.error}</Text> */}
                 <View style={{ flex: 1, alignItems: 'center',}}>
-                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
-                        <Text style={{ color: '#9d1601'}}> Welcome  </Text>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 50, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                        <Text style={{ color: '#9d1601', fontSize: 26}}> SEACKER </Text>
                     </View>
                 </View>
                 <View style={{ flex: 1, alignItems: 'center',}}>

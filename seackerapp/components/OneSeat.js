@@ -171,9 +171,42 @@ const OneSeat = (props) => {
         // props.navigation.navigate('Seat')
     }
 
+    const [count, setcount] = useState(0)
+    useEffect(() => {
+        let c = 1
+        props.datas.forEach(element => {
+            if(element.taker === null){
+                c++
+            }
+        });
+        setcount(c)
+    }, [count])
+
     return (
         <View style={{ flex: 1}}>
-                <View style={{flex: 3, alignItems: 'center'}}>
+                <View style={{ flex: 1, alignItems: 'center'}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                        <Text style={{ color: '#9d1601', fontSize: 18}} > One Seat (available) :  {count}</Text>
+                    </View>
+                    
+                </View>
+                <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                        <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>
+                    </View>
+                        {
+                            change ? (
+                                <Modal visible={true} transparent={true}>
+                                    <Text>{images.name}</Text>
+                                    <ImageViewer imageUrls={images}/>
+                                    <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
+                                </Modal>
+                            ) : (
+                                <Text></Text>
+                            )
+                        }
+                </View>
+                <View style={{flex: 2, alignItems: 'center'}}>
                     <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 200, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
                             <View style={{ alignItems: 'center', justifyContent: 'center'}}>
                                 <Image
@@ -186,8 +219,8 @@ const OneSeat = (props) => {
                     </View>
                 </View>
                 <View style={{flex: 1}}>
-                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 150, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
-                        <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>
+                    {/* <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 150, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}> */}
+                        {/* <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>
                         {
                             change ? (
                                 <Modal visible={true} transparent={true}>
@@ -198,8 +231,8 @@ const OneSeat = (props) => {
                             ) : (
                                 <Text></Text>
                             )
-                        }
-                    </View>
+                        } */}
+                    {/* </View> */}
                 </View>
                 {/* <View style={{flex: 1, alignItems: 'center'}}>
                     <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 200, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>

@@ -1,14 +1,10 @@
-const Meeting = {
-
-}
-const Auditorium = {
-
-}
-
 const dataStore = {
     datas: [],
     sectionSeat: '',
     bookSeat: {},
+    user: {},
+    error: {},
+    data: {}
 }
 
 export default function reducer( state = dataStore, action) {
@@ -23,10 +19,32 @@ export default function reducer( state = dataStore, action) {
                 ...state,
                 sectionSeat: action.state
             }
+        case 'FETCHONEDATA':
+            return {
+                ...state,
+                data: action.state
+            }
         case 'BOOKSEAT':
             return {
                 ...state,
                 bookSeat: action.state
+            }
+        case 'LOGIN':
+            return {
+                ...state,
+                user: action.state,
+                error: {
+                    status: false, 
+                    data: null
+                }
+            }
+        case 'ERRORLOGIN':
+            return {
+                ...state,
+                error: {
+                    status: action.state, 
+                    data: action.data
+                }
             }
         default:
             return state

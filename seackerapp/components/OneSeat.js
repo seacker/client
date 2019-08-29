@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, Image, TouchableOpacity, FlatList, Modal, Button, ScrollView} from 'react-native'
+import {View, Text, Image, TouchableOpacity, FlatList, Modal, Button, ScrollView, ImageBackground} from 'react-native'
 import {connect} from 'react-redux'
 import {fetchSeat} from '../store/action'
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -128,22 +128,26 @@ const OneSeat = (props) => {
     }
 
     //for image mapping
-    const images = [{
-        name: 'Block B',
-        props: {
-            source: require('../assets/areatengahatas.png')
-        }
-    }, {
-        name: 'Block C',
-        props: {
-            source: require('../assets/tengahbawah.png')
-        }
-    },{
-        name: 'Block D',
-        props: {
-            source: require('../assets/areakiri.png')
-        }
-    }]
+    const images = [
+        //     {
+        //     name: 'Block B',
+        //     props: {
+        //         source: require('../assets/areatengahatas.png')
+        //     }
+        // }, 
+        {
+            name: 'Block C',
+            props: {
+                source: require('../assets/tengahbawah.png')
+            }
+        },
+        // {
+        //     name: 'Block D',
+        //     props: {
+        //         source: require('../assets/areakiri.png')
+        //     }
+        // }
+    ]
 
     //temporary mapping image use this button
     let btns = [
@@ -161,52 +165,68 @@ const OneSeat = (props) => {
 
     //with coordinate
     const changePage = (value) => {
-        console.log('ini .... : ', props.navigation)
+        // console.log('ini .... : ', props.navigation)
         // dont forget sending the user
         props.navigation.navigate(value)
         // props.navigation.navigate('Seat')
     }
 
     return (
-        <View>
-            <Button onPress={() => { changeModal(true)}} title='Display Seat'></Button>
-            {
-                change ? (
-                    <Modal visible={true} transparent={true}>
-                        <Text>{images.name}</Text>
-                        <ImageViewer imageUrls={images}/>
-                        <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
-                    </Modal>
-                ) : (
-                    <Text></Text>
-                )
-            }
-            <View>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={{ color: 'white', textAlign: 'center'}}>Block : </Text>
-                    <FlatList
-                        data={btns}
-                        numColumns={3}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem = { ({item, index}) => (
-                            <TouchableOpacity onPress={() => { choosenBlock(item.name)}}>
-                                <View style={{ margin: 3, borderRadius: 20}}>
-                                    <Image
-                                        style = {{ width: 100, height: 100}}
-                                        source={{uri: item.url}}
-                                    />
-                                    <Text style={{ color: 'white', textAlign: 'center'}}> {item.name} </Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                    />
-                    <Button onPress={() => { changePage('Coordinate')}} title='coordinate'></Button>
+        <View style={{ flex: 1}}>
+                <View style={{flex: 3, alignItems: 'center'}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 200, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                            <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+                                <Image
+                                    onPress={() => { changePage('Coordinate')}}
+                                    style = {{ width: 100, height: 100}}
+                                    source={{uri:'https://www.pwc.com/ca/en/consulting/women-in-work-2018/p494583-services-consulting-womeninwork2018-main-whatpayattention-illustration.png'}}
+                                />
+                                <Button onPress={() => { changePage('Coordinate')}} title='Choose Your Seat 💺' color='#9d1601'></Button>
+                            </View>
+                    </View>
                 </View>
-            </View>
-            <View>
-                <View style={{margin: 5, width: 500, height: 400}}>
-                    <View style={{ marginTop: 10}}>
-                        <ScrollView>
+                <View style={{flex: 1}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 150, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                        <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>
+                        {
+                            change ? (
+                                <Modal visible={true} transparent={true}>
+                                    <Text>{images.name}</Text>
+                                    <ImageViewer imageUrls={images}/>
+                                    <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
+                                </Modal>
+                            ) : (
+                                <Text></Text>
+                            )
+                        }
+                    </View>
+                </View>
+                {/* <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 200, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={{ color: 'white', textAlign: 'center'}}>Block : </Text>
+                            <FlatList
+                                data={btns}
+                                numColumns={3}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem = { ({item, index}) => (
+                                    <TouchableOpacity onPress={() => { choosenBlock(item.name)}}>
+                                        <View style={{ margin: 3, borderRadius: 20}}>
+                                            <Image
+                                                style = {{ width: 100, height: 100}}
+                                                source={{uri: item.url}}
+                                            />
+                                            <Text style={{ color: 'white', textAlign: '#9d1601'}}> {item.name} </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                )}
+                            />
+                        </View>
+                    </View>
+                </View> */}
+                <View style={{flex: 1}}>
+                    <View >
+                        {/* <ScrollView>
                             {
                                 blockB ? (
                                     <View>
@@ -243,7 +263,16 @@ const OneSeat = (props) => {
                                     <Text></Text>
                                 )
                             }
-                        </ScrollView>
+                        </ScrollView> */}
+                        {/* <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 200, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+                                    <Image
+                                        style = {{ width: 100, height: 100}}
+                                        source={{uri:'https://www.pwc.com/ca/en/consulting/women-in-work-2018/p494583-services-consulting-womeninwork2018-main-whatpayattention-illustration.png'}}
+                                    />
+                                    <Button onPress={() => { changePage('Coordinate')}} title='Choose Your Seat 💺' color='#9d1601'></Button>
+                                </View>
+                        </View>
                         <View>
                             {
                                 res ? (
@@ -262,10 +291,9 @@ const OneSeat = (props) => {
                                     <Text></Text>
                                 )
                             }
-                        </View>
+                        </View> */}
                     </View>
                 </View>
-            </View>
         </View>
     )
 }

@@ -22,7 +22,7 @@ const CoordinatePick = (props) => {
         //     setdata(props.datas)
         // }
         data.forEach( (el, index) => {
-            console.log(index)
+            console.log(index, '================')
         })
     }, [])
 
@@ -188,44 +188,12 @@ const CoordinatePick = (props) => {
         }
     }
 
-    const [a1, seta1] = useState(false)
-    const [a2, seta2] = useState(false)
-    const [a3, seta3] = useState(false)
-    const [a4, seta4] = useState(false)
-    const [a5, seta5] = useState(false)
-    const [a6, seta6] = useState(false)
-    const [a7, seta7] = useState(false)
-    const [a8, seta8] = useState(false)
-    const [a9, seta9] = useState(false)
-    const [a10, seta10] = useState(false)
-
-    const [a11, seta11] = useState(false)
-    const [a12, seta12] = useState(false)
-    const [a13, seta13] = useState(false)
-    const [a14, seta14] = useState(false)
-    const [a15, seta15] = useState(false)
-    const [a16, seta16] = useState(false)
-    const [a17, seta17] = useState(false)
-    const [a18, seta18] = useState(false)
-    const [a19, seta19] = useState(false)
-    const [a20, seta20] = useState(false)
-
-    const [a21, seta21] = useState(false)
-    const [a22, seta22] = useState(false)
-    const [a23, seta23] = useState(false)
-    const [a24, seta24] = useState(false)
-    const [a25, seta25] = useState(false)
-    const [a26, seta26] = useState(false)
-    const [a27, seta27] = useState(false)
-    const [a28, seta28] = useState(false)
-    const [a29, seta29] = useState(false)
-    const [a30, seta30] = useState(false)
-
     const [mo, setmo] = useState(false)
     const [id, setid] = useState('')
     const [one, setone] = useState({})
-    // const [idseat, setidseat] = useState('')
-    const setmodals = (value) => {
+    //for checkout
+    const [trCh, setrCh] = useState(false)
+    const setmodals = (value, sd) => {
         console.log('ini di setmodal: ', value)
         if(value === 'close'){
             setmo(false)
@@ -239,58 +207,38 @@ const CoordinatePick = (props) => {
             setid(props.user.user._id)
         }
 
-    }
-
-    // check available seat
-    // const checking = async(id) => {
-    //     console.log('lagi checking. . . . seat : ' + id)
-    //     //return true or false
-    //     //checking for disable seat
-    //     await props.fetchData()
-    //     console.log('data seat : ', data)
-    //     data.forEach(element => {
-    //         console.log(element, '==========')
-    //         if(element._id === id){
-    //             if(element.taker === null){
-    //                 // props.oneData(id, props.user.token)
-    //                 console.log(element)
-    //                 console.log('checking available seat or no : you can seat here', )
-    //             }else{
-    //                 console.log('checking available seat or no : not available', )
-    //             }
-    //         }
-    //     });
-    //     // const yey = await data.map( item => item.includes(id))
-    // }
+    }   
 
     const [pick, setpick] = useState(false)
     const [cs, setcs] = useState('')
+    const [idseat, setidseat] = useState('')
+    
     const startbook = async (id, seatnum) => {
         // await props.oneData(id, props.user.token)
         // checking(id)
         data.forEach(element => {
             if(element._id == id){
-                console.log(element, '==========')
+                // console.log(element, '==========')
                 if(element.taker === null){
                     bookforme(id)
-                    console.log(element, 'kosong nih')
-                    setcs(`checking available seat ${seatnum} : you can seat here`)
+                    setidseat(element._id)
+                    // console.log(element, 'kosong nih')
+                    setcs(`seat ${seatnum} : you can seat here`)
                     setpick(false)
-                    console.log(`checking available seat ${seatnum} : you can seat here`)
+                    // console.log(`checking available seat ${seatnum} : you can seat here`)
                 }else{
-                    setcs(`checking available seat ${seatnum} : not available`)
+                    setcs(`seat ${seatnum} : is not available for now`)
                     setpick(true)
-                    console.log(`checking available seat ${seatnum} : not available`)
+                    // console.log(`checking available seat ${seatnum} : not available`)
                 }
             }
         });
-        console.log('ini di startbook ', props.data)
-        console.log('ini tokennya : ',  props.user.token)
+        // console.log('ini di startbook ', props.data)
+        // console.log('ini tokennya : ',  props.user.token)
         setone(props.data)
     }
 
     const bookforme = (value) => {
-        // console.log('masuk book for me')
         props.oneData(value, props.user.token)
         // sending the booked (one) into choosenSeat
         // console.log('data berhasil found: ', one)
@@ -309,9 +257,10 @@ const CoordinatePick = (props) => {
                                 </View>
                             ) : (
                                 <View style={{ }}>
-                                    <Text style={{ color: '#9d1601', fontSize: 24}}>User {JSON.stringify(tex.user)}</Text>
-                                    <Text style={{ color: '#9d1601', fontSize: 24}}>Your seat: seat {cho} id: {id}</Text>
-                                    <Button onPress={() => { bookforme()}} title='book for me' color='#9d1601'></Button>
+                                    {/* <Text style={{ color: '#9d1601', fontSize: 24}}>User : {JSON.stringify(tex.user)}</Text> */}
+                                    <Text style={{ color: '#9d1601', fontSize: 24}}>seat: {cho}</Text>
+                                    <Text style={{ color: '#9d1601', fontSize: 24}}>are you sure wanna book this seat ?</Text>
+                                    <Button onPress={() => { bookforme(idseat)}} title='book for me' color='#9d1601'></Button>
                                     <Button onPress={() => { setmodals('close')}} title='close' color='#9d1601'></Button>
                                 </View>
                             )
@@ -497,8 +446,7 @@ const CoordinatePick = (props) => {
                             b1 ? (
                                 <View style={{ backgroundColor: 'pink', borderRadius: 10, width: 20, height: 20, top : 40}}>
                                     <Button onPress={() => { 
-                                        disable('1')
-                                        setmo(false)}} title='' color='#9d1601'></Button>
+                                        disable('1')}} title='' color='#9d1601'></Button>
                                 </View>
                             ) : (
                                 // disini nanti itenary lagi ok
@@ -563,7 +511,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -45}}>
                                     <Button onPress={() => { 
                                         setmodals('4')
-                                        choosenSt('4')}} title='' color='#9d1601'></Button>
+                                        choosenSt('4')
+                                        startbook('5d650d9a5b4ee35f0b7455c9', '4')
+                                    }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -580,7 +530,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -75}}>
                                     <Button onPress={() => { 
                                         setmodals('5')
-                                        choosenSt('5')}} title='' color='#9d1601'></Button>
+                                        choosenSt('5')
+                                        startbook('5d650da85b4ee35f0b7455ca', '5')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -601,7 +553,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -80}}>
                                     <Button onPress={() => { 
                                         setmodals('26')
-                                        choosenSt('26')}} title='' color='#9d1601'></Button>
+                                        choosenSt('26')
+                                        startbook('5d650ea55b4ee35f0b7455df', '26')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -616,7 +570,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -80}}>
                                     <Button onPress={() => { 
                                         setmodals('16')
-                                        choosenSt('16')}} title='' color='#9d1601'></Button>
+                                        choosenSt('16')
+                                        startbook('5d650e1f5b4ee35f0b7455d5', '16')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -634,7 +590,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -110}}>
                                     <Button onPress={() => { 
                                         setmodals('27')
-                                        choosenSt('27')}} title='' color='#9d1601'></Button>
+                                        choosenSt('27')
+                                        startbook('5d650eab5b4ee35f0b7455e0', '27')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -649,7 +607,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -110}}>
                                     <Button onPress={() => { 
                                         setmodals('17')
-                                        choosenSt('17')}} title='' color='#9d1601'></Button>
+                                        choosenSt('17')
+                                        startbook('5d650e295b4ee35f0b7455d6', '17')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -666,7 +626,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -140}}>
                                     <Button onPress={() => { 
                                         setmodals('28')
-                                        choosenSt('28')}} title='' color='#9d1601'></Button>
+                                        choosenSt('28')
+                                        startbook('5d650eb55b4ee35f0b7455e1', '28')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -681,7 +643,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -140}}>
                                     <Button onPress={() => { 
                                         setmodals('18')
-                                        choosenSt('18')}} title='' color='#9d1601'></Button>
+                                        choosenSt('18')
+                                        startbook('5d650e335b4ee35f0b7455d7', '18')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -698,7 +662,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -170}}>
                                     <Button onPress={() => { 
                                         setmodals('29')
-                                        choosenSt('29')}} title='' color='#9d1601'></Button>
+                                        choosenSt('29')
+                                        startbook('5d650ebb5b4ee35f0b7455e2', '29')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -713,7 +679,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -170}}>
                                     <Button onPress={() => { 
                                         setmodals('19')
-                                        choosenSt('19')}} title='' color='#9d1601'></Button>
+                                        choosenSt('19')
+                                        startbook('5d650e3a5b4ee35f0b7455d8', '19')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -730,7 +698,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -200}}>
                                     <Button onPress={() => { 
                                         setmodals('30')
-                                        choosenSt('30')}} title='' color='#9d1601'></Button>
+                                        choosenSt('30')
+                                        startbook('5d650ec45b4ee35f0b7455e3', '30')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -745,7 +715,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -200}}>
                                     <Button onPress={() => { 
                                         setmodals('20')
-                                        choosenSt('20')}} title='' color='#9d1601'></Button>
+                                        choosenSt('20')
+                                        startbook('5d650ec45b4ee35f0b7455e3', '20')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -764,7 +736,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -80}}>
                                     <Button onPress={() => { 
                                         setmodals('6')
-                                        choosenSt('6')}} title='' color='#9d1601'></Button>
+                                        choosenSt('6')
+                                        startbook('5d650db65b4ee35f0b7455cb', '6')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -782,7 +756,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -110}}>
                                     <Button onPress={() => { 
                                         setmodals('7')
-                                        choosenSt('7')}} title='' color='#9d1601'></Button>
+                                        choosenSt('7')
+                                        startbook('5d650dc25b4ee35f0b7455cc', '7')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -799,7 +775,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -140}}>
                                     <Button onPress={() => { 
                                         setmodals('8')
-                                        choosenSt('8')}} title='' color='#9d1601'></Button>
+                                        choosenSt('8')
+                                        startbook('5d650db65b4ee35f0b7455cb', '8')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -817,7 +795,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -170}}>
                                     <Button onPress={() => { 
                                         setmodals('9')
-                                        choosenSt('9')}} title='' color='#9d1601'></Button>
+                                        choosenSt('9')
+                                        startbook('5d650db65b4ee35f0b7455d650dd45b4ee35f0b7455ce5cb', '9')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }
@@ -835,7 +815,9 @@ const CoordinatePick = (props) => {
                                 <View style={{ width: 20, height: 20, top : -200}}>
                                     <Button onPress={() => { 
                                         setmodals('10')
-                                        choosenSt('10')}} title='' color='#9d1601'></Button>
+                                        choosenSt('10')
+                                        startbook('5d650db65b4ee35', '10')
+                                        }} title='' color='#9d1601'></Button>
                                 </View>
                             )
                         }

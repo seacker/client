@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, Button, Modal, FlatList, Alert, TouchableOpacity} from 'react-native'
+import {View, Text, Button, Modal, FlatList, Alert, TouchableOpacity, ImageBackground} from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer';
 import DatePicker from 'react-native-datepicker'
 import axios from 'axios'
 
 const MeetingRoom = (props) => {
+
+    useEffect( () => {
+        console.log(listRoom)
+    }, [listRoom])
 
     checkTime = (time) => {
         let temp = time.split(':')
@@ -161,30 +165,7 @@ const MeetingRoom = (props) => {
     }]
 
     function filteredData(selectedDate, selectedStartTime) {
-        setListRoom(
-            {
-                A: {
-                    index: 'A',
-                    color: 'gainsboro',
-                    enabled: true
-                },
-                B: {
-                    index: 'B',
-                    color: 'gainsboro',
-                    enabled: true
-                },
-                C: {
-                    index: 'C',
-                    color: 'gainsboro',
-                    enabled: true
-                },
-                D: {
-                    index: 'D',
-                    color: 'gainsboro',
-                    enabled: true
-                }
-            }
-        )
+        
 
         let filtered = []
 
@@ -212,21 +193,24 @@ const MeetingRoom = (props) => {
                         schedule.arrRooms.forEach( (room) => {
                             for (var key in listRoom) {
                                 if (key === room) {
+                                    console.log('masuk sama lagi nih', key, room)
+                                    // listRoom[key].color = 'red'
+                                    // console.log(listRoom[key])
                                     setListRoom({
                                         ...listRoom,
-                                        [key]: {
-                                            ...listRoom[key],
+                                        [room]: {
+                                            ...listRoom[room],
                                             color: 'red',
                                             enabled: false
                                         }
                                     })
+                                    console.log(listRoom)
                                 }
                             }
                         })
                         setFiltered(filtered)
                     } else {
                         console.log(temp, temp2, 'ga sama jam nya')
-                        console.log('selectedStartTime ga sama dengan schedule')
                     }
                 } else {
                     console.log(schedule.date, dateFormatted, 'ga sama')
@@ -677,182 +661,182 @@ Time: ${startTime}, Room: ${JSON.stringify(bookRooms)}`,
     console.log(maximum)
 
     return (
-        <View style={{heigth: '100%', width: '100%'}}>
-            <View>
-                <View style={{width: '95%'}}>
-                    <Button onPress={() => { changeModal(true)}} title="Tap to view meeting room's floor plan"></Button>
+        <View>
+        <View>
+            <View style={{margin: '1%'}}>
+                <Button onPress={() => { changeModal(true)}} title="Tap to view meeting room's floor plan"></Button>
+            </View>
+            {
+                change ? (
+                    <Modal visible={true} transparent={true}>
+                        <Text>{images.name}</Text>
+                        <ImageViewer imageUrls={images}/>
+                        <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
+                    </Modal>
+                ) : (
+                    <Text></Text>
+                )
+            }
+            <View style={{backgroundColor: 'rgba(255,255,255,0.5)', justifyContent: 'center', flexDirection: 'column'}}>
+                <View style={{justifyContent: 'center', marginBottom: 5}}>
+                    <Text style={{color: '#9d1601'}}>
+                        Choose your time: 
+                    </Text>
                 </View>
-                {
-                    change ? (
-                        <Modal visible={true} transparent={true}>
-                            <Text>{images.name}</Text>
-                            <ImageViewer imageUrls={images}/>
-                            <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
-                        </Modal>
-                    ) : (
-                        <Text></Text>
-                    )
-                }
-                <View style={{justifyContent: 'center', flexDirecttion: 'column'}}>
-                    <View style={{justifyContent: 'center', width: '95%', marginBottom: 5}}>
-                        <Text style={{color: 'white'}}>
-                            Choose your time: 
-                        </Text>
+                <View style={{justifyContent: 'center', width: '95%'}}>
+                    <View style={{justifyContent: 'center'}}>
+                        <DatePicker
+                            style={{width: '100%'}}
+                            date={date}
+                            mode="date"
+                            placeholder="Select date"
+                            format="YYYY-MM-DD"
+                            minDate={`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`}
+                            maxDate={maximum}
+                            confirmBtnText="Ok"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36,
+                                    color: '#9d1601'
+                                },
+                                dateText: {
+                                    color: '#9d1601'
+                                }
+                            }}
+                            onDateChange={(date) => {setDate(date); filteredData(date)}}
+                        />
                     </View>
-                    <View style={{justifyContent: 'center', width: '95%'}}>
-                        <View style={{justifyContent: 'center'}}>
-                            <DatePicker
-                                style={{width: '100%'}}
-                                date={date}
-                                mode="date"
-                                placeholder="Select date"
-                                format="YYYY-MM-DD"
-                                minDate={`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`}
-                                maxDate={maximum}
-                                confirmBtnText="Ok"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 4,
-                                        marginLeft: 0
-                                    },
-                                    dateInput: {
-                                        marginLeft: 36,
-                                        color: 'white'
-                                    },
-                                    dateText: {
-                                        color: 'white'
-                                    }
-                                }}
-                                onDateChange={(date) => {setDate(date); filteredData(date)}}
-                            />
-                        </View>
-                        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                            <DatePicker
-                                style={{width: '50%'}}
-                                date={startTime}
-                                mode="time"
-                                placeholder="Start time"
-                                format="HH:mm"
-                                showIcon={false}
-                                minuteInterval={30}
-                                confirmBtnText="Ok"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 4,
-                                        marginLeft: 0
-                                    },
-                                    dateInput: {
-                                        marginLeft: 36,
-                                        color: 'white'
-                                    },
-                                    dateText: {
-                                        color: 'white'
-                                    }
-                                }}
-                                onDateChange={(startMeeting) => {checkStartTime(startMeeting); filteredData(date, startMeeting)}}
-                            />
-                            <DatePicker
-                                style={{width: '50%'}}
-                                date={endTime}
-                                mode="time"
-                                placeholder="End time"
-                                format="HH:mm"
-                                showIcon={false}
-                                minuteInterval={30}
-                                confirmBtnText="Ok"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 4,
-                                        marginLeft: 0
-                                    },
-                                    dateInput: {
-                                        marginLeft: 36,
-                                        color: 'white'
-                                    },
-                                    dateText: {
-                                        color: 'white'
-                                    }
-                                }}
-                                onDateChange={(endMeeting) => {checkEndTime(startTime, checkTime(endMeeting)); console.log(endMeeting)}}
-                            />
-                        </View>
-                
-                        <View style={{marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <TouchableOpacity disabled={!listRoom.A.enabled} onPress={() => {bookRoom('A')}}>
-                                <View style={{height: 50, width: 50, backgroundColor: listRoom.A.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
-                                    <Text>
-                                        A    
-                                    </Text>                            
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity disabled={!listRoom.B.enabled} onPress={() => {bookRoom('B')}}>
-                                <View style={{height: 50, width: 50, backgroundColor: listRoom.B.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
-                                    <Text>
-                                        B
-                                    </Text>                            
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity disabled={!listRoom.C.enabled} onPress={() => {bookRoom('C')}}>
-                                <View style={{height: 50, width: 50, backgroundColor: listRoom.C.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
-                                    <Text>
-                                        C 
-                                    </Text>                          
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity disabled={!listRoom.D.enabled} onPress={() => {bookRoom('D')}}>
-                                <View style={{height: 50, width: 50, backgroundColor: listRoom.D.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
-                                    <Text style={{margin: 'auto'}}>
-                                        D    
-                                    </Text>                            
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                        <DatePicker
+                            style={{width: '50%'}}
+                            date={startTime}
+                            mode="time"
+                            placeholder="Start time"
+                            format="HH:mm"
+                            showIcon={false}
+                            minuteInterval={30}
+                            confirmBtnText="Ok"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36,
+                                    color: '#9d1601'
+                                },
+                                dateText: {
+                                    color: '#9d1601'
+                                }
+                            }}
+                            onDateChange={(startMeeting) => {checkStartTime(startMeeting); filteredData(date, startMeeting)}}
+                        />
+                        <DatePicker
+                            style={{width: '50%'}}
+                            date={endTime}
+                            mode="time"
+                            placeholder="End time"
+                            format="HH:mm"
+                            showIcon={false}
+                            minuteInterval={30}
+                            confirmBtnText="Ok"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36,
+                                    color: '#9d1601'
+                                },
+                                dateText: {
+                                    color: '#9d1601'
+                                }
+                            }}
+                            onDateChange={(endMeeting) => {checkEndTime(startTime, checkTime(endMeeting)); console.log(endMeeting)}}
+                        />
+                    </View>
+            
+                    <View style={{marginTop: '1%', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <TouchableOpacity disabled={!listRoom.A.enabled} onPress={() => {bookRoom('A')}}>
+                            <View style={{height: 50, width: 50, backgroundColor: listRoom.A.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
+                                <Text>
+                                    A    
+                                </Text>                            
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity disabled={!listRoom.B.enabled} onPress={() => {bookRoom('B')}}>
+                            <View style={{height: 50, width: 50, backgroundColor: listRoom.B.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
+                                <Text>
+                                    B
+                                </Text>                            
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity disabled={!listRoom.C.enabled} onPress={() => {bookRoom('C')}}>
+                            <View style={{height: 50, width: 50, backgroundColor: listRoom.C.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
+                                <Text>
+                                    C 
+                                </Text>                          
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity disabled={!listRoom.D.enabled} onPress={() => {bookRoom('D')}}>
+                            <View style={{height: 50, width: 50, backgroundColor: listRoom.D.color, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', textAlign: 'center', verticalAlign: 'middle'}}>
+                                <Text style={{margin: 'auto'}}>
+                                    D    
+                                </Text>                            
+                            </View>
+                        </TouchableOpacity>
+                    </View>
 
-                        <View style={{right: '0%', marginTop: '5%'}}>
-                            <View style={{padding: 0, height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row',alignContent: 'center', alignItems: 'center', verticalAlign: 'middle'}}>
-                                <View style={{width: '45%'}}>
-                                    <Button
-                                        title='Book'
-                                        color='blue'
-                                        onPress={ () => {bookingFunction(startTime, endTime, date, book)}}
-                                    />
-                                </View>
+                    <View style={{right: '0%', marginTop: '1%'}}>
+                        <View style={{padding: 0, height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row',alignContent: 'center', alignItems: 'center', verticalAlign: 'middle'}}>
+                            <View style={{width: '45%'}}>
+                                <Button
+                                    title='Book'
+                                    color='blue'
+                                    onPress={ () => {bookingFunction(startTime, endTime, date, book)}}
+                                />
                             </View>
                         </View>
+                    </View>
 
-                        <View style={{marginTop: 20, padding: 0, height: 200}}>
-                            <FlatList
-                                data={filteredSchedules}
-                                renderItem={({item}) => (
-                                    <View style={{flexDirection: 'column', justifyContent: 'center', marginBottom: 10}}>
-                                        {console.log(item.UserBook)}
-                                        <Text style={{color: 'white'}}>Date: {item.date}, </Text>
-                                        <Text style={{color: 'white'}}>Time: {item.startBook}-{item.endBook}, </Text>
-                                        <Text style={{color: 'white'}}>Room: {item.arrRooms.map( (room) => {return (`${room} `)})}</Text>
-                                        {(item.UserBook) ? (
-                                                <Text style={{color: 'white', fontWeight: 'bold'}}>Booker: {item.UserBook.name}</Text>
-                                            ) : (
-                                                <Text style={{color: 'white', fontWeight: 'bold'}}>Booker: Unknown</Text>
-                                            )
-                                        }
-                                        
-                                    </View>
-                                )}
-                            />
-                        </View>
+                    <View style={{marginTop: '1%', padding: 0, height: 200}}>
+                        <FlatList
+                            data={filteredSchedules}
+                            renderItem={({item}) => (
+                                <View style={{flexDirection: 'column', justifyContent: 'center', marginBottom: 10}}>
+                                    {console.log(item.UserBook)}
+                                    <Text style={{color: '#9d1601'}}>Date: {item.date}, </Text>
+                                    <Text style={{color: '#9d1601'}}>Time: {item.startBook}-{item.endBook}, </Text>
+                                    <Text style={{color: '#9d1601'}}>Room: {item.arrRooms.map( (room) => {return (`${room} `)})}</Text>
+                                    {(item.UserBook) ? (
+                                            <Text style={{color: '#9d1601', fontWeight: 'bold'}}>Booker: {item.UserBook.name}</Text>
+                                        ) : (
+                                            <Text style={{color: '#9d1601', fontWeight: 'bold'}}>Booker: Unknown</Text>
+                                        )
+                                    }
+                                    
+                                </View>
+                            )}
+                        />
                     </View>
                 </View>
             </View>
         </View>
+    </View>
     )
 }
 

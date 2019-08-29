@@ -3,34 +3,28 @@ import axios from 'axios'
 export function login(value){
     console.log('ini sampe action ', value)
     return (dispatch, state) => {
-        console.log("masuk sini test123")
-        dispatch({
-            type: 'LOADING',
-            state: true
-        })
-        axios.post('http://13.229.145.18/users/login', {
-            nik : value.nik,
-            password : value.password
-        })
-        .then(({data}) => {
-            console.log('ini data success : ', data)
+
+        if (value) {
+            console.log("masuk sini test123")
+            dispatch({
+                type: 'LOADING',
+                state: true
+            })
             dispatch({
                 type: 'LOGIN',
-                state: data
+                state: value
             })
             dispatch({
                 type: 'LOADING',
                 state: false
             })
-        })
-        .catch((err) => {
-            console.log(err)
+        } else {
             dispatch({
                 type: 'ERRORLOGIN',
                 state: false,
                 data: err
             })
-        })
+        }
     }
 }
 export function fetchData(){

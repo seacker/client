@@ -407,7 +407,7 @@ const MeetingRoom = (props) => {
                             token: token
                         },
                         data: {
-                            date: date,
+                            date: new Date(date),
                             arrRooms: bookRooms,
                             startBook: start,
                             endBook: end,
@@ -447,6 +447,12 @@ const MeetingRoom = (props) => {
                                 },
                             ],
                             {cancelable: false},
+                        )
+                    })
+                    .catch( (err) => {
+                        Alert.alert(
+                            `Error`,
+                            `Failed sending data to server, detail: ${err.message} `
                         )
                     })
                 }

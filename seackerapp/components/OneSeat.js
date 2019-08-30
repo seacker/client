@@ -165,6 +165,7 @@ const OneSeat = (props) => {
 
     //with coordinate
     const changePage = (value) => {
+        console.log('masuk changepage')
         // console.log('ini .... : ', props.navigation)
         // dont forget sending the user
         props.navigation.navigate(value)
@@ -188,25 +189,28 @@ const OneSeat = (props) => {
                     <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
                         <Text style={{ color: '#9d1601', fontSize: 18}} > One Seat (available) :  {count}</Text>
                     </View>
-                    
-                </View>
-                <View style={{flex: 1, alignItems: 'center'}}>
                     <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
-                        <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>
+                        <Button onPress={() => { changePage('Coordinate')}} title='Choose Your Seat 💺' color='#9d1601'></Button>
+                        
                     </View>
-                        {
-                            change ? (
-                                <Modal visible={true} transparent={true}>
-                                    <Text>{images.name}</Text>
-                                    <ImageViewer imageUrls={images}/>
-                                    <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
-                                </Modal>
-                            ) : (
-                                <Text></Text>
-                            )
-                        }
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
+                            <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>
+                        </View>
+                            {
+                                change ? (
+                                    <Modal visible={true} transparent={true}>
+                                        <Text>{images.name}</Text>
+                                        <ImageViewer imageUrls={images}/>
+                                        <Button onPress={() => { changeModal(false)}} title='Close' color='white'></Button>
+                                    </Modal>
+                                ) : (
+                                    <Text></Text>
+                                )
+                            }
+                    </View>
                 </View>
-                <View style={{flex: 2, alignItems: 'center'}}>
+                {/* <View style={{flex: 2, alignItems: 'center'}}>
                     <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 300, height: 200, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}>
                             <View style={{ alignItems: 'center', justifyContent: 'center'}}>
                                 <Image
@@ -217,7 +221,7 @@ const OneSeat = (props) => {
                                 <Button onPress={() => { changePage('Coordinate')}} title='Choose Your Seat 💺' color='#9d1601'></Button>
                             </View>
                     </View>
-                </View>
+                </View> */}
                 <View style={{flex: 1}}>
                     {/* <View style={{display : 'flex', justifyContent:'center', alignItems: 'center', width: 150, height: 30, backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: 25}}> */}
                         {/* <Button onPress={() => { changeModal(true)}} title='Display Seat' color='#9d1601'></Button>

@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react'
-import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image, Modal, TextInput} from 'react-native'
+import { View, Text, ImageBackground, Button, FlatList, TouchableOpacity, SafeAreaView, Image, Modal, TextInput, AsyncStorage} from 'react-native'
 import {connect} from 'react-redux'
 import {login, fetchData} from '../store/action'
+import axios from 'axios'
+
+const mapState = (state) => {
+    return {
+        ...state
+    }
+}
+
+const mapDispatch = {login, fetchData}
 
 const Login = (props) => {
     useEffect(() => {
@@ -22,14 +31,33 @@ const Login = (props) => {
     const [pwd, setpwd] = useState('')
 
     //login
-    const logindata = async (value) => {
+    const logindata = (value) => {
         console.log('ini di logindata-login', value)
-        if(value.nik != '' && value.pwd != ''){
+        if(value.nik != '' && value.password != ''){
             // setsuc1(false)
-            await props.login(value)
-            props.navigation.navigate('LandingPage')
+            axios({
+                method: 'post',
+                url: 'http://13.229.145.18/users/login',
+                data: {
+                    nik: value.nik,
+                    password: value.password
+                }
+            })
+            .then( async ({data}) => {
+                console.log(data)
+                await AsyncStorage.setItem('token', data.token)
+                await AsyncStorage.setItem('name', data.user.name)
+                await AsyncStorage.setItem('nik', data.user.nik)
+                await props.login(data.user)
+                props.navigation.navigate('LandingPage', { user : props.user})
+            })
+            .catch( (err) => {
+                props.login(null)
+            })
         }
     }
+    console.log(props.state)
+    
     return (
         <View style={{flex: 1}}>
             <ImageBackground source={require('../assets/background.png')} style={{width: '100%', height: '100%'}}>
@@ -66,12 +94,5 @@ const Login = (props) => {
     )
 }
 
-const mapState = (state) => {
-    return {
-        ...state
-    }
-}
-
-const mapDispatch = {login, fetchData}
 
 export default connect(mapState, mapDispatch)(Login)

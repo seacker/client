@@ -48,7 +48,7 @@ const Login = (props) => {
                 await AsyncStorage.setItem('token', data.token)
                 await AsyncStorage.setItem('name', data.user.name)
                 await AsyncStorage.setItem('nik', data.user.nik)
-                await props.login(data.user)
+                await props.login(data)
                 props.navigation.navigate('LandingPage', { user : props.user})
             })
             .catch( (err) => {

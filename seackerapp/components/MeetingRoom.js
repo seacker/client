@@ -250,7 +250,7 @@ const MeetingRoom = (props) => {
                 console.log(token, 'ini dari asyncstorage')
                 axios({
                     method: 'get',
-                    url: 'http://13.229.145.18/booking',
+                    url: 'http://localhost:3001/booking',
                     headers: {
                         token: token
                     }
@@ -402,7 +402,7 @@ const MeetingRoom = (props) => {
                 } else {
                     axios({
                         method: 'post',
-                        url: 'http://13.229.145.18/booking',
+                        url: 'http://localhost:3001/booking',
                         headers: {
                             token: token
                         },
